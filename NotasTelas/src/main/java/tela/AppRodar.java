@@ -8,6 +8,8 @@ package tela;
  *
  * @author felipe
  */
-public class Usuario {
+public class AppRodar {
+    
+    //essa classe so vai rodar a classes
     
 }
