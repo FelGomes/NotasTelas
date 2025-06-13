@@ -1,4 +1,4 @@
-package Telas; // Or whatever package your TelaBoletim is in
+package Funcionalidades; // Or whatever package your TelaBoletim is in
 
 import java.sql.Connection;
 import java.sql.DriverManager;

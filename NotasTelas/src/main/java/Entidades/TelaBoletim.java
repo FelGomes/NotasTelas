@@ -16,6 +16,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import Funcionalidades.PBoletim;
+
 
 
 public class TelaBoletim {
