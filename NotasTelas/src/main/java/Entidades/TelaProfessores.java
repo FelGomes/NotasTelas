@@ -18,12 +18,10 @@ public class TelaProfessores {
 
         PProfessor dao = new PProfessor();
       
-        // --- LABEL DE USUÁRIOS ---
         JLabel lblUsuarios = new JLabel("Listagem de Todos os Usuários:");
         lblUsuarios.setBounds(10, 10, 200, 25);
         oJFrame.add(lblUsuarios);
 
-        // --- TABELA DE TODOS OS USUÁRIOS (lista simples) ---
         String[] colunasUsuarios = {"ID", "Nome", "CPF", "Data Nascimento"};
         DefaultTableModel modeloUsuarios = new DefaultTableModel(colunasUsuarios, 0);
         JTable tabelaUsuarios = new JTable(modeloUsuarios);
@@ -40,12 +38,10 @@ public class TelaProfessores {
         };
         atualizarUsuarios.run();
        
-        // --- LABEL DE PROFESSORES ---
         JLabel lblProfessores = new JLabel("Listagem de Professores:");
         lblProfessores.setBounds(10, 170, 200, 25);
         oJFrame.add(lblProfessores);
 
-        // --- TABELA DE PROFESSORES ---
         String[] colunas = {"ID", "Nome", "Disciplina", "Turma", "Titularidade"};
         DefaultTableModel modelo = new DefaultTableModel(colunas, 0);
         JTable tabela = new JTable(modelo);
@@ -62,7 +58,6 @@ public class TelaProfessores {
         };
         atualizarTabela.run();
 
-        // --- CAMPOS DE FORMULÁRIO ---
         JLabel oJLabelID = new JLabel("ID Usuário:");
         oJLabelID.setBounds(10, 405, 80, 25);
         oJLabelID.setHorizontalAlignment(JLabel.RIGHT);
@@ -115,7 +110,6 @@ public class TelaProfessores {
         btnLimpar.setBounds(430, 555, 100, 30);
         oJFrame.add(btnLimpar);
 
-        // --- EVENTO DE CLIQUE NA TABELA DE PROFESSORES ---
         tabela.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int row = tabela.getSelectedRow();
@@ -128,7 +122,6 @@ public class TelaProfessores {
             }
         });
 
-        // --- AÇÕES DOS BOTÕES ---
         btnInserir.addActionListener(e -> {
             try {
                 int id = Integer.parseInt(oJTextID.getText());
