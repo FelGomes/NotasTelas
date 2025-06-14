@@ -94,17 +94,19 @@ public class PUsuarios {
     }
 
     // Atualizar usuário usando o ID
-    public String alterarUsuario(int id, String nome, String sexo, String endereco, String dataNasc) {
-        String sql = "UPDATE usuarios SET usuarios_nome = ?, usuarios_sexo = ?, usuarios_endereco = ?, usuarios_nascimento = ? "
+    // Atualizar usuário usando o ID e também o CPF
+    public String alterarUsuario(int id, String nome, String sexo, String cpf, String endereco, String dataNasc) {
+        String sql = "UPDATE usuarios SET usuarios_nome = ?, usuarios_sexo = ?, usuarios_cpf = ?, usuarios_endereco = ?, usuarios_nascimento = ? "
                 + "WHERE usuarios_id = ?";
 
         try (Connection conexao = new Conexao().getConexao(); PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
             stmt.setString(1, nome.toUpperCase());
             stmt.setString(2, sexo.toUpperCase());
-            stmt.setString(3, endereco.toUpperCase());
-            stmt.setString(4, dataNasc.toUpperCase());
-            stmt.setInt(5, id);
+            stmt.setString(3, cpf.toUpperCase());
+            stmt.setString(4, endereco.toUpperCase());
+            stmt.setString(5, dataNasc.toUpperCase());
+            stmt.setInt(6, id);
 
             stmt.executeUpdate();
             return "Alteração efetuada com sucesso!";
@@ -113,6 +115,7 @@ public class PUsuarios {
             return "Erro na alteração: " + e.getMessage();
         }
     }
+
 
     // Excluir usuário pelo ID
     public String excluirUsuario(int id) {

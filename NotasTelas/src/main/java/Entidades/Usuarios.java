@@ -145,26 +145,26 @@ public class Usuarios {
             }
         });
 
-        botaoAlterar.addActionListener(e -> {
+      botaoAlterar.addActionListener(e -> {
             if (idSelecionado[0] != -1 && validarCampos(campoUsuario, campoCPF, campoEndereco, campoData, ojComboBox)) {
                 String resultado = pUsuarios.alterarUsuario(
                         idSelecionado[0],
                         campoUsuario.getText(),
                         ojComboBox.getSelectedItem().toString(),
+                        campoCPF.getText(),
                         campoEndereco.getText(),
                         campoData.getText()
                 );
                 JOptionPane.showMessageDialog(null, resultado);
                 try {
                     montarTelaUsuario();
-                } catch (IOException ex) {
+                } catch (IOException | SQLException ex) {
                     ex.printStackTrace();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 janela.dispose();
             }
         });
+
 
         botaoDeletar.addActionListener(e -> {
             if (idSelecionado[0] != -1) {
