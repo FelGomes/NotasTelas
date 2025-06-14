@@ -29,7 +29,7 @@ import java.sql.SQLException;
  *
  * @author felipe
  */
-public class Usuario {
+public class Usuarios {
 
     public static void montarTelaUsuario() throws IOException {
 

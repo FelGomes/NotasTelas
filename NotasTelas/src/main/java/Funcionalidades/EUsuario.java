@@ -7,7 +7,9 @@ package Funcionalidades;
 /**
  *
  * @author felipe
- */public class EUsuario {
+ * 
+ */
+public class EUsuario {
     
     
     private String nome, endereco, sexo, dataNasc, cpf;
