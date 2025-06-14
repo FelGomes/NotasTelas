@@ -10,178 +10,122 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import conexao.Conexao;
+import java.sql.Connection;
 
 /**
  *
  * @author felipe
- */public class PUsuarios {
-    
-    public ArrayList<EUsuario> consultarUsuarioNome(String nome) {
-        
-        ArrayList<EUsuario> oListaPessoa = new ArrayList();
-        
-        Connection conn =  Conexao.obterConexaoMySQL();
-        
-        String SQL = "select * from usuarios where usuarios_nome like ? order by usuarios_nome";
-        
-        
-        try {
-            ResultSet rset;
-            try (PreparedStatement pstm = conn.prepareStatement(SQL, PreparedStatement.RETURN_GENERATED_KEYS)){
-                pstm.setString(1, "%" + nome.toUpperCase().trim() + "%");
-                rset = pstm.executeQuery();
-                int i = 0;
-                
-                while (rset.next()){
-                    
-                    EUsuario usuario = new EUsuario();
-                    usuario.setNome(rset.getString("usuarios_nome"));
-                    usuario.setSexo(rset.getString("usuarios_sexo"));
-                    usuario.setCpf(rset.getString("usuarios_cpf"));
-                    usuario.setEndereco(rset.getString("usuarios_endereco"));
-                    usuario.setDataNasc(rset.getString("usuarios_nascimento"));
-                    
-                    oListaPessoa.add(i++, usuario);
+ */
+
+
+public class PUsuarios {
+
+    // Listar todos os usuários
+    public ArrayList<String[]> listarUsuarios() throws SQLException {
+        ArrayList<String[]> dadosUsuarios = new ArrayList<>();
+
+        String sql = "SELECT usuarios_id, usuarios_nome, usuarios_sexo, usuarios_cpf, usuarios_endereco, usuarios_nascimento "
+                + "FROM usuarios ORDER BY usuarios_nome";
+
+        try (Connection conexao = new Conexao().getConexao(); PreparedStatement stmt = conexao.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                dadosUsuarios.add(new String[]{
+                    rs.getString("usuarios_id"),
+                    rs.getString("usuarios_nome"),
+                    rs.getString("usuarios_sexo"),
+                    rs.getString("usuarios_cpf"),
+                    rs.getString("usuarios_endereco"),
+                    rs.getString("usuarios_nascimento")
+                });
+            }
+        }
+
+        return dadosUsuarios;
+    }
+
+    // Buscar usuários por nome
+    public ArrayList<String[]> buscarUsuariosPorNome(String nomeBusca) throws SQLException {
+        ArrayList<String[]> dadosUsuarios = new ArrayList<>();
+
+        String sql = "SELECT usuarios_id, usuarios_nome, usuarios_sexo, usuarios_cpf, usuarios_endereco, usuarios_nascimento "
+                + "FROM usuarios WHERE UPPER(usuarios_nome) LIKE ? ORDER BY usuarios_nome";
+
+        try (Connection conexao = new Conexao().getConexao(); PreparedStatement stmt = conexao.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + nomeBusca.toUpperCase().trim() + "%");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    dadosUsuarios.add(new String[]{
+                        rs.getString("usuarios_id"),
+                        rs.getString("usuarios_nome"),
+                        rs.getString("usuarios_sexo"),
+                        rs.getString("usuarios_cpf"),
+                        rs.getString("usuarios_endereco"),
+                        rs.getString("usuarios_nascimento")
+                    });
                 }
-                
             }
-            
-                rset.close();
-            
-            
+        }
+
+        return dadosUsuarios;
+    }
+
+    // Inserir usuário
+    public String incluirUsuario(String nome, String sexo, String cpf, String endereco, String dataNasc) {
+        String sql = "INSERT INTO usuarios (usuarios_nome, usuarios_sexo, usuarios_cpf, usuarios_endereco, usuarios_nascimento) "
+                + "VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conexao = new Conexao().getConexao(); PreparedStatement stmt = conexao.prepareStatement(sql)) {
+
+            stmt.setString(1, nome.toUpperCase());
+            stmt.setString(2, sexo.toUpperCase());
+            stmt.setString(3, cpf.toUpperCase());
+            stmt.setString(4, endereco.toUpperCase());
+            stmt.setString(5, dataNasc.toUpperCase());
+
+            stmt.executeUpdate();
+            return "Inclusão efetuada com sucesso!";
+
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            
-        } finally {
-             Conexao.fecharConexao();
+            return "Erro na inclusão: " + e.getMessage();
         }
-        
-        return oListaPessoa;
     }
-    //consultar
-    public ArrayList<EUsuario> consultarUsuario() throws SQLException {
-        
-        ArrayList<EUsuario> oListaPessoa = new ArrayList();
-        
-        Connection conn = Conexao.obterConexaoMySQL();
-        
-        String SQL = "Select * from usuarios order by usuarios_nome";
-        
-        try {
-            ResultSet rset;
-            try (PreparedStatement pstm = conn.prepareStatement(SQL, PreparedStatement.RETURN_GENERATED_KEYS)){
-                rset = pstm.executeQuery();
-                int i = 0;
-                while(rset.next()){
-                    
-                    EUsuario usuario = new EUsuario();
-                    
-                    usuario.setNome(rset.getString("usuarios_nome"));
-                    usuario.setSexo(rset.getString("usuarios_sexo"));
-                    usuario.setCpf(rset.getString("usuarios_cpf"));
-                    usuario.setEndereco(rset.getString("usuarios_endereco"));
-                    usuario.setDataNasc(rset.getString("usuarios_nascimento"));
-                    
-                    oListaPessoa.add(i++, usuario);
-                    
-                } 
-            } 
-                rset.close();   
-            
-        } catch(SQLException e){
-            System.out.println(e.getMessage());
-            
-        } finally {
-            
-           Conexao.fecharConexao();
-        }
-        return oListaPessoa;
-    }
-    //inserir
-    public String incluirUsuario(String nome, String sexo, String cpf, String endereco, String DataNasc){
-        
-        String resultado;
-        
-        Connection conn = Conexao.obterConexaoMySQL();
-        
-        try{
-            String SQL = "Insert into usuarios (usuarios_nome, usuarios_sexo, usuarios_cpf, usuarios_endereco, usuarios_nascimento) values (?,?,?,?,?)";
-                try (PreparedStatement pstm = conn.prepareStatement(SQL, PreparedStatement.RETURN_GENERATED_KEYS)) {                
-                    pstm.setString(1, nome.toUpperCase());
-                    pstm.setString(2, sexo.toUpperCase());
-                    pstm.setString(3, cpf.toUpperCase());
-                    pstm.setString(4, endereco.toUpperCase());
-                    pstm.setString(5, DataNasc.toUpperCase());
-                    pstm.executeUpdate();
-                }
-                
-                resultado = "Inclusao efetuada com sucesso!";
-                
+
+    // Atualizar usuário usando o ID
+    public String alterarUsuario(int id, String nome, String sexo, String endereco, String dataNasc) {
+        String sql = "UPDATE usuarios SET usuarios_nome = ?, usuarios_sexo = ?, usuarios_endereco = ?, usuarios_nascimento = ? "
+                + "WHERE usuarios_id = ?";
+
+        try (Connection conexao = new Conexao().getConexao(); PreparedStatement stmt = conexao.prepareStatement(sql)) {
+
+            stmt.setString(1, nome.toUpperCase());
+            stmt.setString(2, sexo.toUpperCase());
+            stmt.setString(3, endereco.toUpperCase());
+            stmt.setString(4, dataNasc.toUpperCase());
+            stmt.setInt(5, id);
+
+            stmt.executeUpdate();
+            return "Alteração efetuada com sucesso!";
+
         } catch (SQLException e) {
-            resultado = "Erro na inclusao: " + e.getMessage();
+            return "Erro na alteração: " + e.getMessage();
         }
-        
-        Conexao.fecharConexao();
-        
-        return resultado;
     }
-    
-    // canpo para excluir
-    public String excluirUsuario(String cpf) throws SQLException {
-        
-        String resultado;
-        
-        Connection conn = Conexao.obterConexaoMySQL();
-        
-        try { 
-            
-            String SQL = "DELETE from usuarios where usuarios_cpf = ?";
-            try (PreparedStatement pstm = conn.prepareStatement(SQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
-                pstm.setString(1,cpf.toUpperCase());
-                pstm.executeUpdate();
-                
-            }
-            resultado = "Exclusao efetuada com sucesso!";
-        
-        } catch(SQLException e){
-            resultado = "Erro na exclusao: " + e.getMessage();
-        }
-        
-        Conexao.fecharConexao();
-        
-        return resultado;
-    }
-    
-    
-    //alterar 
-      public String alterarUsuario(String nome, String sexo, String cpf, String endereco, String DataNasc) {
 
-        String resultado;
+    // Excluir usuário pelo ID
+    public String excluirUsuario(int id) {
+        String sql = "DELETE FROM usuarios WHERE usuarios_id = ?";
 
-        Connection conn = Conexao.obterConexaoMySQL();
+        try (Connection conexao = new Conexao().getConexao(); PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
-        try {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            return "Exclusão efetuada com sucesso!";
 
-            String SQL = "update usuarios set usuarios_nome = ?, usuarios_sexo = ?,  usuarios_endereco = ?, usuarios_nascimento = ? where usuarios_cpf = ?";
-            try (PreparedStatement pstm = conn.prepareStatement(SQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
-
-                pstm.setString(1, nome.toUpperCase());
-                pstm.setString(2, sexo.toUpperCase());
-                pstm.setString(3, endereco.toUpperCase());
-                pstm.setString(4, DataNasc.toUpperCase());
-                pstm.setString(5, cpf.toUpperCase());
-                pstm.executeUpdate();
-            }
-            resultado = "Alteraçao efetuada com sucesso!";
         } catch (SQLException e) {
-            resultado = "Erro na alteraçao: " + e.getMessage();
-
+            return "Erro na exclusão: " + e.getMessage();
         }
-
-        Conexao.fecharConexao();
-
-        return resultado;
     }
-    
 }
-
