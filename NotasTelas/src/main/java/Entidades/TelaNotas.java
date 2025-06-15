@@ -5,12 +5,13 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
 import java.util.List;
 import Funcionalidades.PNotas;
+import java.io.IOException;
 
 public class TelaNotas {
 
     public static void montarTelaNotas() {
         JFrame frame = new JFrame("Notas");
-        frame.setBounds(400, 150, 820, 750);
+        frame.setBounds(400, 150, 850, 780);
         frame.setLayout(null);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLocationRelativeTo(null);
@@ -129,7 +130,23 @@ public class TelaNotas {
         JButton btnLimpar = new JButton("Limpar");
         btnLimpar.setBounds(520, startY + 2*gapY + 5, 100, 30);
         frame.add(btnLimpar);
+        
+        JButton btnGerArquivo = new JButton("Ger.Arq");
+        btnGerArquivo.setBounds(520, startY + 2*gapY + 5 + 35, 100, 30);
+        frame.add(btnGerArquivo);
+        
+        JLabel lblFiltroDisciplina = new JLabel("Filtrar Disciplina:");
+        lblFiltroDisciplina.setBounds(400, startY + 2 * gapY + 5 + 35 + gapY, labelW, height);
+        frame.add(lblFiltroDisciplina);
 
+        JTextField campoFiltro = new JTextField();
+        campoFiltro.setBounds(500, startY + 2 * gapY + 5 + 35 + gapY, fieldW, height);
+        frame.add(campoFiltro);
+
+        JButton btnFiltar = new JButton("Filtrar");
+        btnFiltar.setBounds(710, startY + 2 * gapY + 5 + 35 + gapY, 120, 30);
+        frame.add(btnFiltar);
+        
         Runnable atualizarTabelas = () -> {
             modeloUsuarios.setRowCount(0);
             for (Object[] u : dao.listarUsuarios()) modeloUsuarios.addRow(u);
@@ -213,6 +230,35 @@ public class TelaNotas {
                 JOptionPane.showMessageDialog(frame, "Preencha todos os campos corretamente.");
             }
         });
+        
+        btnFiltar.addActionListener(e -> {
+            String textoFiltro = campoFiltro.getText().trim();
+            if (textoFiltro.isEmpty()) {
+                atualizarTabelas.run(); // Volta para a lista completa
+                return;
+            }
+            try {
+                List<Object[]> listaFiltrada = dao.buscarNotasPorDisciplina(textoFiltro);
+                atualizarTabela(modeloNotas, listaFiltrada);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(frame, "Erro ao filtrar notas por disciplina.");
+            }
+        });
+
+
+        
+        btnGerArquivo.addActionListener(e -> {
+            try {
+                PNotas pNotas = new PNotas(); // instância da classe de persistência
+                pNotas.gerarArquivoNotas();
+                JOptionPane.showMessageDialog(frame, "Arquivo 'notas.txt' gerado com sucesso!");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(frame, "Erro ao gerar o arquivo.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
 
         btnExcluir.addActionListener(e -> {
             try {
@@ -239,4 +285,14 @@ public class TelaNotas {
 
         frame.setVisible(true);
     }
+    
+    private static void atualizarTabela(DefaultTableModel modelo, List<Object[]> dados) {
+        modelo.setRowCount(0); // Limpa o conteúdo atual da tabela
+        for (Object[] linha : dados) {
+            modelo.addRow(linha); // Adiciona cada nova linha vinda da lista
+        }
+}
+
+    
+    
 }

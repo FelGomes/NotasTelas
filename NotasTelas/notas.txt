@@ -1,0 +1,5 @@
+ID Aluno | Nome Aluno | ID Professor | Nome Professor | Nota 1 | Nota 2 | Nota 3 | Nota 4 | Média | Disciplina
+-------------------------------------------------------------------------------------------------------------
+5 | Markin | 2 | Jonatas  | 1.0 | 10.0 | 15.0 | 10.0 | 9.0 | matematica
+5 | Markin | 2 | Jonatas  | 1.0 | 10.0 | 15.0 | 10.0 | 9.0 | matematica
+8 | dheniel | 4 | Felipe | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | banco de dados II
