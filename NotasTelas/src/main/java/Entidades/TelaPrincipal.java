@@ -43,7 +43,7 @@ public class TelaPrincipal {
         labelUsuario.setHorizontalAlignment(JLabel.CENTER);
         
         JButton buttonUsuario = new JButton();
-        buttonUsuario.setBounds(150,175, 100, 50);
+        buttonUsuario.setBounds(75,175, 100, 50);
         buttonUsuario.add(labelUsuario);
         jFrameInicial.add(buttonUsuario);
         
@@ -52,7 +52,7 @@ public class TelaPrincipal {
         labelAlunos.setHorizontalAlignment(JLabel.CENTER);
         
         JButton buttonAlunos = new JButton();
-        buttonAlunos.setBounds(275, 175, 100, 50);
+        buttonAlunos.setBounds(200, 175, 100, 50);
         buttonAlunos.add(labelAlunos);
         jFrameInicial.add(buttonAlunos);
         
@@ -61,7 +61,7 @@ public class TelaPrincipal {
         labelBoletim.setHorizontalAlignment(JLabel.CENTER);
         
         JButton buttonBoletim = new JButton();
-        buttonBoletim.setBounds(400, 175, 100, 50);
+        buttonBoletim.setBounds(325, 175, 100, 50);
         buttonBoletim.add(labelBoletim);
         jFrameInicial.add(buttonBoletim);
         
@@ -70,7 +70,7 @@ public class TelaPrincipal {
         labelNotas.setHorizontalAlignment(JLabel.CENTER);
         
         JButton buttonNotas = new JButton();
-        buttonNotas.setBounds(525, 175, 100, 50);
+        buttonNotas.setBounds(450, 175, 100, 50);
         buttonNotas.add(labelNotas);
         jFrameInicial.add(buttonNotas);
         
@@ -79,7 +79,7 @@ public class TelaPrincipal {
         labelInstit.setHorizontalAlignment(JLabel.CENTER);
         
         JButton buttonInstit = new JButton();
-        buttonInstit.setBounds(650, 175, 100, 50);
+        buttonInstit.setBounds(525, 175, 100, 50);
         buttonInstit.add(labelInstit);
         jFrameInicial.add(buttonInstit);
         
@@ -88,7 +88,7 @@ public class TelaPrincipal {
         labelProf.setHorizontalAlignment(JLabel.CENTER);
         
         JButton buttonProf = new JButton();
-        buttonProf.setBounds(775, 175, 100, 50);
+        buttonProf.setBounds(600, 175, 100, 50);
         buttonProf.add(labelProf);
         jFrameInicial.add(buttonProf);
         
