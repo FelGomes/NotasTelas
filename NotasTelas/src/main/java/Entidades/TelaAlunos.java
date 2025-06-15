@@ -1,18 +1,16 @@
-
 package Entidades;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import Funcionalidades.PAlunos;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 
 /**
  *
@@ -21,7 +19,7 @@ import java.util.logging.Logger;
 public class TelaAlunos {
 
     public static void montarTelaAlunos() throws IOException, SQLException {
-    
+
         JFrame janela = new JFrame("INSERIR Aluno");
         janela.setBounds(200, 150, 600, 550);
         janela.setLayout(null);
@@ -54,15 +52,25 @@ public class TelaAlunos {
         janela.add(campoTurma);
 
         JLabel campoQtd = new JLabel("Qtd Disciplinas:");
-        campoQtd.setBounds(315, 80, 60, 25);
+        campoQtd.setBounds(315, 80, 100, 25);
         campoQtd.setHorizontalAlignment(JLabel.RIGHT);
         janela.add(campoQtd);
 
         JTextField campoQTD = new JTextField();
-        campoQTD.setBounds(338, 108, 120, 25);
+        campoQTD.setBounds(430, 80, 100, 25);
         janela.add(campoQTD);
 
+        // ✅ Campo Matriculado
+        JLabel labelMatriculado = new JLabel("Matriculado:");
+        labelMatriculado.setBounds(20, 140, 100, 25);
+        janela.add(labelMatriculado);
 
+        String[] opcoesMatricula = {"Sim", "Não"};
+        JComboBox<String> comboMatriculado = new JComboBox<>(opcoesMatricula);
+        comboMatriculado.setBounds(120, 140, 100, 25);
+        janela.add(comboMatriculado);
+
+        // ✅ Botões
         JButton botaoSalvar = new JButton("SAVE");
         botaoSalvar.setBounds(350, 170, 80, 25);
         janela.add(botaoSalvar);
@@ -110,45 +118,12 @@ public class TelaAlunos {
 
         botaoSalvar.addActionListener(e -> {
             if (validarCampos(campoAluno, campoSala, campoTurma, campoQTD)) {
+                boolean matriculado = comboMatriculado.getSelectedItem().toString().equalsIgnoreCase("Sim");
                 String resultado = pAlunos.incluirAlunos(
-                        campoAluno.getText(),
+                        matriculado,
                         campoSala.getText(),
                         campoTurma.getText(),
-                        campoQTD.getText()
-                );
-                JOptionPane.showMessageDialog(null, resultado);
-                try {
-                    montarTelaAlunos();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                janela.dispose();
-            }
-        });
-
-        final int[] idSelecionado = {-1};
-        tabela.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                idSelecionado[0] = Integer.parseInt(tabela.getValueAt(tabela.getSelectedRow(), 0).toString());
-                campoAluno.setText(tabela.getValueAt(tabela.getSelectedRow(), 1).toString());
-                campoSala.setText(tabela.getValueAt(tabela.getSelectedRow(), 2).toString());
-                campoTurma.setText(tabela.getValueAt(tabela.getSelectedRow(), 3).toString());
-                campoQTD.setText(tabela.getValueAt(tabela.getSelectedRow(), 4).toString());
-                botaoAlterar.setEnabled(true);
-                botaoDeletar.setEnabled(true);
-            }
-        });
-
-      botaoAlterar.addActionListener(e -> {
-            if (idSelecionado[0] != -1 && validarCampos(campoAluno, campoSala, campoTurma, campoQTD)) {
-                String resultado = pAlunos.alterarAluno(
-                        idSelecionado[0],
-                        campoAluno.getText(),
-                        campoSala.getText(),
-                        campoTurma.getText(),
-                        campoQTD.getText()
+                        Integer.parseInt(campoQTD.getText())
                 );
                 JOptionPane.showMessageDialog(null, resultado);
                 try {
@@ -160,6 +135,39 @@ public class TelaAlunos {
             }
         });
 
+        final int[] idSelecionado = {-1};
+        tabela.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                idSelecionado[0] = Integer.parseInt(tabela.getValueAt(tabela.getSelectedRow(), 0).toString());
+                String valorMatricula = tabela.getValueAt(tabela.getSelectedRow(), 1).toString();
+                comboMatriculado.setSelectedItem(valorMatricula.equalsIgnoreCase("Sim") ? "Sim" : "Não");
+                campoSala.setText(tabela.getValueAt(tabela.getSelectedRow(), 2).toString());
+                campoTurma.setText(tabela.getValueAt(tabela.getSelectedRow(), 3).toString());
+                campoQTD.setText(tabela.getValueAt(tabela.getSelectedRow(), 4).toString());
+                botaoAlterar.setEnabled(true);
+                botaoDeletar.setEnabled(true);
+            }
+        });
+
+        botaoAlterar.addActionListener(e -> {
+            if (idSelecionado[0] != -1 && validarCampos(campoAluno, campoSala, campoTurma, campoQTD)) {
+                boolean matriculado = comboMatriculado.getSelectedItem().toString().equalsIgnoreCase("Sim");
+                String resultado = pAlunos.alterarAluno(
+                        idSelecionado[0],
+                        matriculado,
+                        campoSala.getText(),
+                        campoTurma.getText(),
+                        Integer.parseInt(campoQTD.getText())
+                );
+                JOptionPane.showMessageDialog(null, resultado);
+                try {
+                    montarTelaAlunos();
+                } catch (IOException | SQLException ex) {
+                    ex.printStackTrace();
+                }
+                janela.dispose();
+            }
+        });
 
         botaoDeletar.addActionListener(e -> {
             if (idSelecionado[0] != -1) {
@@ -167,10 +175,8 @@ public class TelaAlunos {
                 JOptionPane.showMessageDialog(null, resultado);
                 try {
                     montarTelaAlunos();
-                } catch (IOException ex) {
+                } catch (IOException | SQLException ex) {
                     ex.printStackTrace();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 janela.dispose();
             }
@@ -187,10 +193,8 @@ public class TelaAlunos {
         botaoCancelar.addActionListener(e -> {
             try {
                 montarTelaAlunos();
-            } catch (IOException ex) {
+            } catch (IOException | SQLException ex) {
                 ex.printStackTrace();
-            } catch (SQLException ex) {
-                Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
             }
             janela.dispose();
         });
@@ -198,8 +202,8 @@ public class TelaAlunos {
         janela.setVisible(true);
     }
 
-    private static boolean validarCampos(JTextField matriculado, JTextField sala, JTextField turma, JTextField qtdDisciplina) {
-        return !matriculado.getText().trim().isEmpty()
+    private static boolean validarCampos(JTextField aluno, JTextField sala, JTextField turma, JTextField qtdDisciplina) {
+        return !aluno.getText().trim().isEmpty()
                 && !sala.getText().trim().isEmpty()
                 && !turma.getText().trim().isEmpty()
                 && !qtdDisciplina.getText().trim().isEmpty();
@@ -230,5 +234,5 @@ public class TelaAlunos {
             return null;
         }
     }
-    
+
 }
