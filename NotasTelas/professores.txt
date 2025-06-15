@@ -1,0 +1,14 @@
+==== LISTA DE PROFESSORES ====
+
+ID: 4
+Nome: Jonatas 
+Disciplina: matematica
+Turma: 3 Periodo
+Titularidade: pos-doutorado
+------------------------------
+ID: 10
+Nome: Felipe
+Disciplina: banco de dados II
+Turma: 6P
+Titularidade: formado
+------------------------------
