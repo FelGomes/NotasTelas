@@ -17,9 +17,9 @@ public class EAlunos extends EUsuario{
         
     }
 
-    public EAlunos(String nome, String cpf, String endereco, String dataNasc, String sexo, int usuario_id) {
-        super(getNome(), getCpf(), getEndereco(), getDataNasc(), getSexo(), getUsuario_id());
-    }
+    //public EAlunos(String nome, String cpf, String endereco, String dataNasc, String sexo, int usuario_id) {
+    //    super(getNome(), getCpf(), getEndereco(), getDataNasc(), getSexo(), getUsuario_id());
+   // }
 
     public boolean isAlunos_matriculados() {
         return alunos_matriculados;
