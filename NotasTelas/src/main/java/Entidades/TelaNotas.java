@@ -5,6 +5,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
 import java.util.List;
 import Funcionalidades.PNotas;
+import java.io.IOException;
 
 public class TelaNotas {
 
@@ -129,6 +130,10 @@ public class TelaNotas {
         JButton btnLimpar = new JButton("Limpar");
         btnLimpar.setBounds(520, startY + 2*gapY + 5, 100, 30);
         frame.add(btnLimpar);
+        
+        JButton btnGerArquivo = new JButton("Ger.Arq");
+        btnGerArquivo.setBounds(520, startY + 2*gapY + 5 + 35, 100, 30);
+        frame.add(btnGerArquivo);
 
         Runnable atualizarTabelas = () -> {
             modeloUsuarios.setRowCount(0);
@@ -213,6 +218,19 @@ public class TelaNotas {
                 JOptionPane.showMessageDialog(frame, "Preencha todos os campos corretamente.");
             }
         });
+        
+        
+        btnGerArquivo.addActionListener(e -> {
+            try {
+                PNotas pNotas = new PNotas(); // instância da classe de persistência
+                pNotas.gerarArquivoNotas();
+                JOptionPane.showMessageDialog(frame, "Arquivo 'notas.txt' gerado com sucesso!");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(frame, "Erro ao gerar o arquivo.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
 
         btnExcluir.addActionListener(e -> {
             try {
@@ -239,4 +257,6 @@ public class TelaNotas {
 
         frame.setVisible(true);
     }
+    
+    
 }
