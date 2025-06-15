@@ -110,8 +110,22 @@ public class Usuarios {
 
         atualizarTabela(tabela, pUsuarios.listarUsuarios());
 
-        botaoSalvar.addActionListener(e -> {
-            if (validarCampos(campoUsuario, campoCPF, campoEndereco, campoData, ojComboBox)) {
+        botaoSalvar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if (campoUsuario.getText().trim().isEmpty()
+                        || campoCPF.getText().trim().isEmpty()
+                        || campoEndereco.getText().trim().isEmpty()
+                        || campoData.getText().trim().isEmpty()
+                        || ojComboBox.getSelectedIndex() == 0) { /// verificação se todos os dados foram preenchidos
+
+                    JOptionPane.showMessageDialog(null, "Preencha todos os campos!", "Aviso", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                PUsuarios pUsuarios = new PUsuarios();
+
                 String resultado = pUsuarios.incluirUsuario(
                         campoUsuario.getText(),
                         ojComboBox.getSelectedItem().toString(),
@@ -119,15 +133,18 @@ public class Usuarios {
                         campoEndereco.getText(),
                         campoData.getText()
                 );
+
                 JOptionPane.showMessageDialog(null, resultado);
+
+                janela.dispose(); // vai fechar a janela e abrir novamente
+
                 try {
-                    montarTelaUsuario();
+                    montarTelaUsuario(); 
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 } catch (SQLException ex) {
                     Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                janela.dispose();
             }
         });
 
@@ -220,7 +237,7 @@ public class Usuarios {
     public static MaskFormatter mascaraCPF(String mascara) {
         try {
             MaskFormatter formatter = new MaskFormatter(mascara);
-            formatter.setPlaceholder("000.000.000-00");
+            formatter.setPlaceholderCharacter(' ');
             return formatter;
         } catch (ParseException e) {
             return null;

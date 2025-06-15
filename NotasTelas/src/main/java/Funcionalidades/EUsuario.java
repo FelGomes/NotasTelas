@@ -13,6 +13,7 @@ public class EUsuario {
     
     
     private String nome, endereco, sexo, dataNasc, cpf;
+    private int usuario_id;
 
     public String getNome() {
         return nome;
@@ -52,5 +53,13 @@ public class EUsuario {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+    
+    public int getUsuario_id() {
+        return usuario_id;
+    }
+
+    public void setUsuario_id(int usuario_id) {
+        this.usuario_id = usuario_id;
     }
  }
