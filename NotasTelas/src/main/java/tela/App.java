@@ -17,9 +17,9 @@ public class App {
         
        //Usuarios.montarTelaUsuario(); deu certo
        //TelaBoletim.montarTelaVisualizacao(); -> deu certo pra listar
-       //TelaInstituicao.montarTelaInstituicao(); //corrigir o gerar arquivo
-       //TelaNotas.montarTelaNotas(); -> fazer o campo filtro e arrumar para o nome do aluno aparecer, o professor e a disciplina
-       //TelaProfessores.montarTelaProfessor(); // fazer o campo para filtrar 
+       //TelaInstituicao.montarTelaInstituicao(); deu certo
+       //TelaNotas.montarTelaNotas(); -> fazer o campo filtro e arrumar para o nome do aluno aparecer, 
+       //TelaProfessores.montarTelaProfessor(); certo
        //TelaNotas.montarTelaNotas();
        TelaPrincipal.montarTelaInicial();
     }
