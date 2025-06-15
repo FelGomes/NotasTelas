@@ -22,8 +22,13 @@ public class App {
        //Usuarios.montarTelaUsuario(); deu certo
        //TelaBoletim.montarTelaVisualizacao(); -> deu certo pra listar
        //TelaInstituicao.montarTelaInstituicao(); // faltar o filtro e corrigir o gerar arquivo
+<<<<<<< HEAD
        //TelaNotas.montarTelaNotas(); -> fazer o campo filtro e arrumar para o nome do aluno aparecer, o professor e a disciplina
        //TelaProfessores.montarTelaProfessor(); // fazer o campo para filtrar 
+=======
+       //TelaNotas.montarTelaNotas();
+       TelaProfessores.montarTelaProfessor();
+>>>>>>> Felipe
     }
     
     
