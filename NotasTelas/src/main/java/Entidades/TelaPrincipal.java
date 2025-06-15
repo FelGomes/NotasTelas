@@ -70,7 +70,7 @@ public class TelaPrincipal {
         labelNotas.setHorizontalAlignment(JLabel.CENTER);
         
         JButton buttonNotas = new JButton();
-        buttonNotas.setBounds(450, 175, 100, 50);
+        buttonNotas.setBounds(75, 275, 100, 50);
         buttonNotas.add(labelNotas);
         jFrameInicial.add(buttonNotas);
         
@@ -79,7 +79,7 @@ public class TelaPrincipal {
         labelInstit.setHorizontalAlignment(JLabel.CENTER);
         
         JButton buttonInstit = new JButton();
-        buttonInstit.setBounds(525, 175, 100, 50);
+        buttonInstit.setBounds(200, 275, 100, 50);
         buttonInstit.add(labelInstit);
         jFrameInicial.add(buttonInstit);
         
@@ -88,7 +88,7 @@ public class TelaPrincipal {
         labelProf.setHorizontalAlignment(JLabel.CENTER);
         
         JButton buttonProf = new JButton();
-        buttonProf.setBounds(600, 175, 100, 50);
+        buttonProf.setBounds(325, 275, 100, 50);
         buttonProf.add(labelProf);
         jFrameInicial.add(buttonProf);
         
