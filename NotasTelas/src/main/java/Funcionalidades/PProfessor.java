@@ -141,4 +141,36 @@ public class PProfessor {
             e.printStackTrace();
         }
     }
+    
+    public List<Object[]> buscarProfessoresPorNome(String nome) {
+        List<Object[]> lista = new ArrayList<>();
+
+        String sql = "SELECT u.usuarios_id, u.usuarios_nome, p.professores_disciplina, p.professores_turma, p.professores_titularidade "
+                + "FROM professores p "
+                + "INNER JOIN usuarios u ON p.fk_professores_usuarios_id = u.usuarios_id "
+                + "WHERE u.usuarios_nome LIKE ?";
+
+        try (Connection conexao = new Conexao().getConexao(); PreparedStatement stmt = conexao.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + nome + "%");
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("usuarios_id");
+                    String nomeCompleto = rs.getString("usuarios_nome");
+                    String disciplina = rs.getString("professores_disciplina");
+                    String turma = rs.getString("professores_turma");
+                    String titularidade = rs.getString("professores_titularidade");
+
+                    lista.add(new Object[]{id, nomeCompleto, disciplina, turma, titularidade});
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+
+    
 }

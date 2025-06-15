@@ -3,6 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package tela;
+import Entidades.TelaBoletim;
+import Entidades.TelaInstituicao;
+import Entidades.TelaNotas;
+import Entidades.TelaProfessores;
 import Entidades.Usuarios;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -15,7 +19,16 @@ public class App {
     
     public static void main(String[] args) throws IOException, SQLException {
         
-        Usuarios.montarTelaUsuario();
+       //Usuarios.montarTelaUsuario(); deu certo
+       //TelaBoletim.montarTelaVisualizacao(); -> deu certo pra listar
+       //TelaInstituicao.montarTelaInstituicao(); // faltar o filtro e corrigir o gerar arquivo
+<<<<<<< HEAD
+       //TelaNotas.montarTelaNotas(); -> fazer o campo filtro e arrumar para o nome do aluno aparecer, o professor e a disciplina
+       //TelaProfessores.montarTelaProfessor(); // fazer o campo para filtrar 
+=======
+       //TelaNotas.montarTelaNotas();
+       TelaProfessores.montarTelaProfessor();
+>>>>>>> Felipe
     }
     
     
