@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PDiario {
-    public String inserir(EDiario diario) {
+    public String salvar(EDiario diario) {
         String sql = "INSERT INTO diarios (diarios_local, diarios_disciplinas, qtd_alunos, fk_diarios_professores_id, fk_diarios_alunos_id) VALUES (?, ?, ?, ?, ?)";
         try {
             Conexao conexao = new Conexao();

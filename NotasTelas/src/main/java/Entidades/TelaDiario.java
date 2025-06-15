@@ -119,5 +119,24 @@ public class TelaDiario {
                 botaoExcluir.setEnabled(true);
             }
         });
+        botaoSalvar.addActionListener(e -> {
+            if (validarCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno)) {
+                EDiario d = new EDiario();
+                //abreviar para deixar o código menor para a leitura
+                d.setDiarios_local(campoLocal.getText());
+                d.setDiarios_disciplinas(campoDisciplinas.getText());
+                d.setQtd_alunos(Integer.parseInt(campoQtdAlunos.getText()));
+                d.setFk_diarios_professores_(Integer.parseInt(campoFkProfessor.getText()));
+                d.setFk_diarios_alunos_(Integer.parseInt(campoFkAluno.getText()));
+                String resultado = pDiario.inserir(d);
+                JOptionPane.showMessageDialog(null, resultado);
+                atualizarTabela(tabela, pDiario.listar(""));
+                limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
+                botaoAlterar.setEnabled(false);
+                botaoExcluir.setEnabled(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos.");
+            }
+        });
     }
 }
