@@ -22,7 +22,7 @@ public class App {
        //TelaProfessores.montarTelaProfessor(); certo
        //TelaNotas.montarTelaNotas();
        TelaFrequencias.MontarTelaFrequencia();
-       TelaPrincipal.montarTelaInicial();
+       //TelaPrincipal.montarTelaInicial();
     }
     
     

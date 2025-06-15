@@ -9,15 +9,24 @@ import conexao.Conexao;
 
 public class PFrequencias {
 
-    // Método para consultar todas as frequências
-    public ArrayList<EFrequencias> consultarFrequencia() {
+    // Listar todas as frequências
+    public ArrayList<EFrequencias> listarFrequencias() {
         ArrayList<EFrequencias> lista = new ArrayList<>();
-                
-        String sql = "SELECT f.*, p.professores_id, a.alunos_id FROM frequencias f " +
-                     "JOIN professores p ON f.professores_id = p.professores_id " +
-                     "JOIN alunos a ON f.alunos_id = a.alunos_id ORDER BY f.frequencias_id";
 
-            try (Connection conexao = new Conexao().getConexao(); PreparedStatement stmt = conexao.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+        String sql = "SELECT f.frequencias_id, f.total_aulas, f.aulas_ministradas, f.frequencias_faltas, " +
+                     "f.prctg_presenca, f.frequencias_disciplinas, " +
+                     "uprof.usuarios_nome AS professor_nome, " +
+                     "ualuno.usuarios_nome AS aluno_nome " +
+                     "FROM frequencias f " +
+                     "INNER JOIN professores p ON f.fk_frequencias_professores_id = p.professores_id " +
+                     "INNER JOIN usuarios uprof ON p.fk_professores_usuarios_id = uprof.usuarios_id " +
+                     "INNER JOIN alunos a ON f.fk_frequencias_alunos_id = a.alunos_id " +
+                     "INNER JOIN usuarios ualuno ON a.fk_alunos_usuarios_id = ualuno.usuarios_id";
+
+        try (Connection conexao = new Conexao().getConexao();
+             PreparedStatement stmt = conexao.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
                 EFrequencias freq = new EFrequencias();
                 freq.setFrequencias_id(rs.getInt("frequencias_id"));
@@ -27,111 +36,80 @@ public class PFrequencias {
                 freq.setPrctg_presenca(rs.getFloat("prctg_presenca"));
                 freq.setFrequencias_disciplinas(rs.getString("frequencias_disciplinas"));
 
-                // Criar e setar o objeto Professores
-                EProfessores prof = new Professores();
-                prof.setId(rs.getInt("professores_id"));
-                // aqui você pode carregar mais campos se quiser
-                freq.setProfessores(prof);
-
-                // Criar e setar o objeto Alunos
-                Alunos aluno = new Alunos();
-                aluno.setId(rs.getInt("alunos_id"));
-                // aqui você pode carregar mais campos se quiser
-                freq.setAluno(aluno);
-
                 lista.add(freq);
             }
-            rs.close();
+
         } catch (SQLException e) {
-            System.out.println("Erro consultarFrequencia: " + e.getMessage());
-        } finally {
-            Conexao.fecharConexao();
+            System.out.println("Erro na listagem de frequências: " + e.getMessage());
         }
+
         return lista;
     }
 
-    // Método para incluir frequência
+    // Incluir frequência
     public String incluirFrequencia(EFrequencias freq) {
-        String resultado;
-        Connection conn = Conexao.obterConexaoMySQL();
+        String sql = "INSERT INTO frequencias (total_aulas, aulas_ministradas, frequencias_faltas, prctg_presenca, " +
+                     "frequencias_disciplinas, fk_frequencias_professores_id, fk_frequencias_alunos_id) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        String SQL = "INSERT INTO frequencias (total_aulas, aulas_ministradas, frequencias_faltas, prctg_presenca, frequencias_disciplinas, professores_id, alunos_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conexao = new Conexao().getConexao();
+             PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
-        try (PreparedStatement pstm = conn.prepareStatement(SQL)) {
-            pstm.setInt(1, freq.getTotal_aulas());
-            pstm.setInt(2, freq.getAulas_ministradas());
-            pstm.setInt(3, freq.getFrequencias_faltas());
-            pstm.setFloat(4, freq.getPrctg_presenca());
-            pstm.setString(5, freq.getFrequencias_disciplinas().toUpperCase());
-            pstm.setInt(6, freq.getProfessores().getId());
-            pstm.setInt(7, freq.getAluno().getId());
+            stmt.setInt(1, freq.getTotal_aulas());
+            stmt.setInt(2, freq.getAulas_ministradas());
+            stmt.setInt(3, freq.getFrequencias_faltas());
+            stmt.setFloat(4, freq.getPrctg_presenca());
+            stmt.setString(5, freq.getFrequencias_disciplinas().toUpperCase());
+            stmt.setInt(6, freq.getProfessores().getIdProfessor());
+            stmt.setInt(7, freq.getAluno().getUsuario_id());
 
-            int linhas = pstm.executeUpdate();
-            if (linhas > 0) {
-                resultado = "Inclusão efetuada com sucesso!";
-            } else {
-                resultado = "Falha na inclusão.";
-            }
+            stmt.executeUpdate();
+            return "Inclusão efetuada com sucesso!";
+
         } catch (SQLException e) {
-            resultado = "Erro na inclusão: " + e.getMessage();
-        } finally {
-            Conexao.fecharConexao();
+            return "Erro na inclusão: " + e.getMessage();
         }
-        return resultado;
     }
 
-    // Método para alterar frequência
+    // Alterar frequência
     public String alterarFrequencia(EFrequencias freq) {
-        String resultado;
-        Connection conn = Conexao.obterConexaoMySQL();
+        String sql = "UPDATE frequencias SET total_aulas = ?, aulas_ministradas = ?, frequencias_faltas = ?, " +
+                     "prctg_presenca = ?, frequencias_disciplinas = ?, fk_frequencias_professores_id = ?, " +
+                     "fk_frequencias_alunos_id = ? WHERE frequencias_id = ?";
 
-        String SQL = "UPDATE frequencias SET total_aulas = ?, aulas_ministradas = ?, frequencias_faltas = ?, prctg_presenca = ?, frequencias_disciplinas = ?, professores_id = ?, alunos_id = ? WHERE frequencias_id = ?";
+        try (Connection conexao = new Conexao().getConexao();
+             PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
-        try (PreparedStatement pstm = conn.prepareStatement(SQL)) {
-            pstm.setInt(1, freq.getTotal_aulas());
-            pstm.setInt(2, freq.getAulas_ministradas());
-            pstm.setInt(3, freq.getFrequencias_faltas());
-            pstm.setFloat(4, freq.getPrctg_presenca());
-            pstm.setString(5, freq.getFrequencias_disciplinas().toUpperCase());
-            pstm.setInt(6, freq.getProfessores().getId());
-            pstm.setInt(7, freq.getAluno().getId());
-            pstm.setInt(8, freq.getFrequencias_id());
+            stmt.setInt(1, freq.getTotal_aulas());
+            stmt.setInt(2, freq.getAulas_ministradas());
+            stmt.setInt(3, freq.getFrequencias_faltas());
+            stmt.setFloat(4, freq.getPrctg_presenca());
+            stmt.setString(5, freq.getFrequencias_disciplinas().toUpperCase());
+            stmt.setInt(6, freq.getProfessores().getIdProfessor());
+            stmt.setInt(7, freq.getAluno().getUsuario_id());
+            stmt.setInt(8, freq.getFrequencias_id());
 
-            int linhas = pstm.executeUpdate();
-            if (linhas > 0) {
-                resultado = "Alteração efetuada com sucesso!";
-            } else {
-                resultado = "Nenhum registro encontrado para alterar.";
-            }
+            stmt.executeUpdate();
+            return "Alteração efetuada com sucesso!";
+
         } catch (SQLException e) {
-            resultado = "Erro na alteração: " + e.getMessage();
-        } finally {
-            Conexao.fecharConexao();
+            return "Erro na alteração: " + e.getMessage();
         }
-        return resultado;
     }
 
-    // Método para excluir frequência pelo id
-    public String excluirFrequencia(int frequencias_id) {
-        String resultado;
-        Connection conn = Conexao.obterConexaoMySQL();
+    // Excluir frequência
+    public String excluirFrequencia(int id) {
+        String sql = "DELETE FROM frequencias WHERE frequencias_id = ?";
 
-        String SQL = "DELETE FROM frequencias WHERE frequencias_id = ?";
+        try (Connection conexao = new Conexao().getConexao();
+             PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
-        try (PreparedStatement pstm = conn.prepareStatement(SQL)) {
-            pstm.setInt(1, frequencias_id);
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            return "Exclusão efetuada com sucesso!";
 
-            int linhas = pstm.executeUpdate();
-            if (linhas > 0) {
-                resultado = "Exclusão efetuada com sucesso!";
-            } else {
-                resultado = "Nenhum registro encontrado para exclusão.";
-            }
         } catch (SQLException e) {
-            resultado = "Erro na exclusão: " + e.getMessage();
-        } finally {
-            Conexao.fecharConexao();
+            return "Erro na exclusão: " + e.getMessage();
         }
-        return resultado;
     }
 }
