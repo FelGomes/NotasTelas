@@ -203,3 +203,4 @@ private static void atualizarTabela(JTable tabela, ArrayList<EMatricula> lista) 
     tabela.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
     }
 }
+//finalizou, apenas restando configurar a gerar_arqv
