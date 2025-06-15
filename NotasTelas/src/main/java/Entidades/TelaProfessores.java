@@ -145,7 +145,7 @@ public class TelaProfessores {
             }
             try {
                 List<Object[]> filtrados = dao.buscarProfessoresPorNome(nomeBusca);
-                atualizarTabela(modelo, filtrados); // Agora funciona corretamente
+                atualizarTabela(modelo, filtrados);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Erro ao filtrar professores.");

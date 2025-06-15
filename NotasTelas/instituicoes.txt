@@ -1,7 +1,4 @@
 ID | Nome | Endereço | Cidade | UF | Escolaridade | Nível
 ------------------------------------------------------------
-1 | alvaro | ceres | go | fo | medio | 3.0
-2 | a | a | a | aa | aa | 7.0
-4 | if goiano | rua 90 | ceres | GO | superioro | 7.0
-6 | cic | rua 2 | ceres  | GO | ensino medio | 5.0
-8 | UFMTs | RUA 11 | CAMPO GRANDE DA SILVA XAVIER | BA | Fundamental | 2.0
+4 | solar | rua 70 | ceres | GO | fundamental | 5.0
+5 | alpha | rua 9090 | goiana | go | 7 | 7.0

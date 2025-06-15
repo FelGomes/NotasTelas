@@ -73,6 +73,35 @@ public class PInstituicao {
             e.printStackTrace();
         }
     }
+    
+    public List<Object[]> buscarInstituicoesPorNome(String nome) {
+        List<Object[]> lista = new ArrayList<>();
+        String sql = "SELECT instituicao_id, instituicao_nome, instituicao_endereco, instituicao_cidade, instituicao_uf, instituicao_escolaridade, instituicao_nivel "
+                + "FROM instituicao WHERE instituicao_nome LIKE ? ORDER BY instituicao_nome";
+
+        try (Connection conexao = new Conexao().getConexao(); PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setString(1, "%" + nome + "%");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("instituicao_id");
+                    String instNome = rs.getString("instituicao_nome");
+                    String endereco = rs.getString("instituicao_endereco");
+                    String cidade = rs.getString("instituicao_cidade");
+                    String uf = rs.getString("instituicao_uf");
+                    String escolaridade = rs.getString("instituicao_escolaridade");
+                    float nivel = rs.getFloat("instituicao_nivel");
+
+                    lista.add(new Object[]{id, instNome, endereco, cidade, uf, escolaridade, nivel});
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+
 
     public void excluirInstituicao(int id) {
         String sql = "DELETE FROM instituicao WHERE instituicao_id = ?";
