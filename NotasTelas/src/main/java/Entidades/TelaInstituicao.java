@@ -95,6 +95,19 @@ public class TelaInstituicao {
         JButton btnGerarArquivo = new JButton("Gerar Arquivo");
         btnGerarArquivo.setBounds(450, 220, 150, 30);
         frame.add(btnGerarArquivo);
+        
+        JLabel lblFiltro = new JLabel("Filtrar por Nome:");
+        lblFiltro.setBounds(30, 270, 120, 25);
+        frame.add(lblFiltro);
+
+        JTextField campoFiltro = new JTextField();
+        campoFiltro.setBounds(150, 270, 250, 25);
+        frame.add(campoFiltro);
+
+        JButton btnFiltrar = new JButton("Filtrar");
+        btnFiltrar.setBounds(450, 270, 150, 30);
+        frame.add(btnFiltrar);
+
 
         PInstituicao pInst = new PInstituicao();
 
@@ -123,6 +136,22 @@ public class TelaInstituicao {
                 throw new IllegalArgumentException("Preencha todos os campos obrigatórios.");
             }
         };
+        
+        btnFiltrar.addActionListener(e -> {
+            String nomeBusca = campoFiltro.getText().trim();
+            if (nomeBusca.isEmpty()) {
+                atualizarTabela.run(); // Volta para a lista completa
+                return;
+            }
+            try {
+                List<Object[]> filtrados = pInst.buscarInstituicoesPorNome(nomeBusca);
+                atualizarTabela(modelo, filtrados);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(frame, "Erro ao filtrar instituições.");
+            }
+        });
+
 
         btnAdicionar.addActionListener(e -> {
             try {
@@ -220,4 +249,15 @@ public class TelaInstituicao {
         atualizarTabela.run();
         frame.setVisible(true);
     }
+    
+    
+     private static void atualizarTabela(DefaultTableModel modelo, List<Object[]> dados) {
+        modelo.setRowCount(0); // Limpa o conteúdo atual
+        for (Object[] linha : dados) {
+            modelo.addRow(linha); // Adiciona cada nova linha
+        }
+    }
+
+    
+    
 }
