@@ -187,5 +187,19 @@ private static boolean validarCampos(JTextField... campos) {
     }
     return true;
 }
-    
+private static void atualizarTabela(JTable tabela, ArrayList<EMatricula> lista) {
+    String[] colunas = {"ID", "Data Início", "Data Fim", "Qtd Tempo", "ID Instituição", "ID Aluno"};
+    String[][] dados = new String[lista.size()][6];
+
+    for (int i = 0; i < lista.size(); i++) {
+        EMatricula m = lista.get(i);
+        dados[i][0] = String.valueOf(m.getMatriculas_id());
+        dados[i][1] = m.getData_inicio();
+        dados[i][2] = m.getData_fim();
+        dados[i][3] = String.valueOf(m.getQtd_tempo());
+        dados[i][4] = String.valueOf(m.getFk_instituicao_id());
+        dados[i][5] = String.valueOf(m.getFk_aluno_id());
+    }
+    tabela.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
+    }
 }
