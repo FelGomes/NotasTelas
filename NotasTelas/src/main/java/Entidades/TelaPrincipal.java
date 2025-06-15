@@ -113,7 +113,7 @@ public class TelaPrincipal {
 
                 try {
                     jFrameInicial.dispose();
-                    TelaAlunos.montarTela();
+                    TelaAlunos.montarTelaAlunos();
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
                     System.out.println(e1.getMessage());
@@ -129,7 +129,7 @@ public class TelaPrincipal {
 
                 try {
                     jFrameInicial.dispose();
-                    TelaBoletim.montarTela();
+                    TelaBoletim.montarTelaVisualizacao();
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
                     System.out.println(e1.getMessage());
@@ -145,7 +145,7 @@ public class TelaPrincipal {
 
                 try {
                     jFrameInicial.dispose();
-                    TelaNotas.montarTela();
+                    TelaNotas.montarTelaNotas();
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
                     System.out.println(e1.getMessage());
@@ -161,7 +161,7 @@ public class TelaPrincipal {
 
                 try {
                     jFrameInicial.dispose();
-                    TelaInstituicao.montarTela();
+                    TelaInstituicao.montarTelaInstituicao();
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
                     System.out.println(e1.getMessage());
@@ -177,7 +177,7 @@ public class TelaPrincipal {
 
                 try {
                     jFrameInicial.dispose();
-                    TelaProfessores.montarTela();
+                    TelaProfessores.montarTelaProfessor();
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
                     System.out.println(e1.getMessage());
