@@ -186,6 +186,5 @@ private static boolean validarCampos(JTextField... campos) {
         }
     }
     return true;
-}
-    
+      }   
 }
