@@ -5,21 +5,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import conexao.Conexao;
 
 public class PFrequencias {
 
     // Método para consultar todas as frequências
     public ArrayList<EFrequencias> consultarFrequencia() {
         ArrayList<EFrequencias> lista = new ArrayList<>();
-        
-        Connection conn =  Conexao.obterConexaoMySQL();
                 
-        String SQL = "SELECT f.*, p.professores_id, a.alunos_id FROM frequencias f " +
+        String sql = "SELECT f.*, p.professores_id, a.alunos_id FROM frequencias f " +
                      "JOIN professores p ON f.professores_id = p.professores_id " +
                      "JOIN alunos a ON f.alunos_id = a.alunos_id ORDER BY f.frequencias_id";
 
-        try (PreparedStatement pstm = conn.prepareStatement(SQL)) {
-            ResultSet rs = pstm.executeQuery();
+            try (Connection conexao = new Conexao().getConexao(); PreparedStatement stmt = conexao.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 EFrequencias freq = new EFrequencias();
                 freq.setFrequencias_id(rs.getInt("frequencias_id"));
@@ -30,7 +28,7 @@ public class PFrequencias {
                 freq.setFrequencias_disciplinas(rs.getString("frequencias_disciplinas"));
 
                 // Criar e setar o objeto Professores
-                Professores prof = new Professores();
+                EProfessores prof = new Professores();
                 prof.setId(rs.getInt("professores_id"));
                 // aqui você pode carregar mais campos se quiser
                 freq.setProfessores(prof);
