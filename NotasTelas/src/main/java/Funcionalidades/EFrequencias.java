@@ -1,4 +1,7 @@
 package Funcionalidades;
+
+import Funcionalidades.EAlunos;
+import Funcionalidades.EProfessores;
 /**
  * Classe para objetos do tipo Frequencias.
  * @author Marcus Vinícius Nunes Silva
@@ -9,8 +12,8 @@ public class EFrequencias {
     private int frequencias_id, total_aulas, aulas_ministradas, frequencias_faltas;
     private float prctg_presenca;
     private String frequencias_disciplinas;
-    private Professores professores;
-    private Alunos aluno;
+    private EProfessores professores;
+    private EAlunos aluno;
 
     /**
      * Construtor vazio com todas as informações de Frequencias.
@@ -29,7 +32,7 @@ public class EFrequencias {
      * @param professores Objeto professores.
      * @param aluno Objeto alunos.
      */
-    public EFrequencias(int frequencias_id, int total_aulas, int aulas_ministradas, int frequencias_faltas, float prctg_presenca, String frequencias_disciplinas, Professores professores, Alunos aluno) {
+    public EFrequencias(int frequencias_id, int total_aulas, int aulas_ministradas, int frequencias_faltas, float prctg_presenca, String frequencias_disciplinas, EProfessores professores, EAlunos aluno) {
         this.frequencias_id = frequencias_id;
         this.total_aulas = total_aulas;
         this.aulas_ministradas = aulas_ministradas;
@@ -93,7 +96,7 @@ public class EFrequencias {
      * Método para definir um valor ao objeto Alunos.
      * @param aluno Objeto Alunos.
      */
-    public void setAluno(Alunos aluno) {
+    public void setAluno(EAlunos aluno) {
         this.aluno = aluno;
     }
 
@@ -117,7 +120,7 @@ public class EFrequencias {
      * Método para retornar o objeto Alunos.
      * @return aluno Objeto Alunos.
      */
-    public Alunos getAluno() {
+    public EAlunos getAluno() {
         return aluno;
     }
 
@@ -157,7 +160,7 @@ public class EFrequencias {
      * Método para retornar o objeto Professores.
      * @return professores Objeto Professores.
      */
-    public Professores getProfessores() {
+    public EProfessores getProfessores() {
         return professores;
     }
 
@@ -165,6 +168,6 @@ public class EFrequencias {
      * Método para definir um valor ao objeto Professores.
      * @param professores Objeto Professores.
      */
-    public void setProfessores(Professores professores) {
+    public void setProfessores(EProfessores professores) {
         this.professores = professores;
     }

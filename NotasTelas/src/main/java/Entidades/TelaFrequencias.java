@@ -2,8 +2,9 @@ package Entidades;
 
 import javax.swing.*;
 import java.io.IOException;
+import Funcionalidades.EFrequencias;
 
-public class TFrequencias {
+public class TelaFrequencias {
 
     public static void MontarTelaFrequencia() throws IOException {
         JFrame janela = new JFrame("FREQUÊNCIA");
