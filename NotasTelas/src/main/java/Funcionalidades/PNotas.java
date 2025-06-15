@@ -28,7 +28,7 @@ public class PNotas {
 
     public List<Object[]> listarAlunos() {
         List<Object[]> lista = new ArrayList<>();
-        String sql = "SELECT a.fk_alunos_usuarios_id AS id, u.usuarios_nome FROM alunos a JOIN usuarios u ON a.fk_alunos_usuarios_id = u.usuarios_id";
+        String sql = "SELECT a.alunos_id AS id, u.usuarios_nome FROM alunos a JOIN usuarios u ON a.fk_alunos_usuarios_id = u.usuarios_id";
         try (Connection conexao = new Conexao().getConexao(); 
              PreparedStatement stmt = conexao.prepareStatement(sql); 
              ResultSet rs = stmt.executeQuery()) {
@@ -46,7 +46,7 @@ public class PNotas {
 
     public List<Object[]> listarProfessores() {
         List<Object[]> lista = new ArrayList<>();
-        String sql = "SELECT p.fk_professores_usuarios_id AS id, u.usuarios_nome, p.professores_disciplina FROM professores p JOIN usuarios u ON p.fk_professores_usuarios_id = u.usuarios_id";
+        String sql = "SELECT p.professores_id AS id, u.usuarios_nome, p.professores_disciplina FROM professores p JOIN usuarios u ON p.fk_professores_usuarios_id = u.usuarios_id";
         try (Connection conexao = new Conexao().getConexao(); 
              PreparedStatement stmt = conexao.prepareStatement(sql); 
              ResultSet rs = stmt.executeQuery()) {
@@ -154,7 +154,7 @@ public class PNotas {
     }
 
     public boolean alunoExiste(int id) {
-        String sql = "SELECT 1 FROM alunos WHERE fk_alunos_usuarios_id = ?";
+        String sql = "SELECT 1 FROM alunos WHERE alunos_id = ?";
         try (Connection conexao = new Conexao().getConexao(); 
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, id);
@@ -168,7 +168,7 @@ public class PNotas {
     }
 
     public boolean professorExiste(int id) {
-        String sql = "SELECT 1 FROM professores WHERE fk_professores_usuarios_id = ?";
+        String sql = "SELECT 1 FROM professores WHERE professores_id = ?";
         try (Connection conexao = new Conexao().getConexao(); 
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, id);
