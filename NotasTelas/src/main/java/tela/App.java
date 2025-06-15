@@ -21,6 +21,7 @@ public class App {
        //TelaNotas.montarTelaNotas(); -> certo
        //TelaProfessores.montarTelaProfessor(); certo
        //TelaNotas.montarTelaNotas();
+       TelaFrequencias.MontarTelaFrequencia();
        TelaPrincipal.montarTelaInicial();
     }
     
