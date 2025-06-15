@@ -13,6 +13,8 @@ import java.awt.BorderLayout;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -101,6 +103,8 @@ public class TelaPrincipal {
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
                     System.out.println(e1.getMessage());
+                } catch (SQLException ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             }
@@ -117,6 +121,8 @@ public class TelaPrincipal {
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
                     System.out.println(e1.getMessage());
+                } catch (SQLException ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             }
@@ -143,13 +149,8 @@ public class TelaPrincipal {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                try {
-                    jFrameInicial.dispose();
-                    TelaNotas.montarTelaNotas();
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    System.out.println(e1.getMessage());
-                }
+                jFrameInicial.dispose(); // TODO Auto-generated catch block
+                TelaNotas.montarTelaNotas();
 
             }
         });
@@ -159,13 +160,8 @@ public class TelaPrincipal {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                try {
-                    jFrameInicial.dispose();
-                    TelaInstituicao.montarTelaInstituicao();
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    System.out.println(e1.getMessage());
-                }
+                jFrameInicial.dispose(); // TODO Auto-generated catch block
+                TelaInstituicao.montarTelaInstituicao();
 
             }
         });
