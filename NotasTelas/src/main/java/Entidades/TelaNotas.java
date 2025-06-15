@@ -11,7 +11,7 @@ public class TelaNotas {
 
     public static void montarTelaNotas() {
         JFrame frame = new JFrame("Notas");
-        frame.setBounds(400, 150, 820, 750);
+        frame.setBounds(400, 150, 850, 780);
         frame.setLayout(null);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLocationRelativeTo(null);
