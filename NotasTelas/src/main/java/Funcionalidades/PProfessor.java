@@ -1,6 +1,9 @@
 package Funcionalidades;
 
 import conexao.Conexao;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -120,4 +123,22 @@ public class PProfessor {
         return lista;
     }
 
+    public void gerarArquivoProfessores() {
+        List<Object[]> professores = listarProfessores();
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("professores.txt"))) {
+            writer.write("==== LISTA DE PROFESSORES ====\n\n");
+            for (Object[] prof : professores) {
+                writer.write("ID: " + prof[0] + "\n");
+                writer.write("Nome: " + prof[1] + "\n");
+                writer.write("Disciplina: " + prof[2] + "\n");
+                writer.write("Turma: " + prof[3] + "\n");
+                writer.write("Titularidade: " + prof[4] + "\n");
+                writer.write("------------------------------\n");
+            }
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

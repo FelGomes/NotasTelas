@@ -109,6 +109,10 @@ public class TelaProfessores {
         JButton btnLimpar = new JButton("Limpar");
         btnLimpar.setBounds(430, 555, 100, 30);
         oJFrame.add(btnLimpar);
+        
+        JButton btnGerarArquivo = new JButton("Gerar arquivo");
+        btnGerarArquivo.setBounds(540, 555, 130, 30);
+        oJFrame.add(btnGerarArquivo);
 
         tabela.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -170,7 +174,17 @@ public class TelaProfessores {
             oJTextTURMA.setText("");
             oJTextTITULARIDADE.setText("");
         });
-
+        
+         btnGerarArquivo.addActionListener(e -> {
+            try {
+                dao.gerarArquivoProfessores();
+                JOptionPane.showMessageDialog(null, "Arquivo gerado");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Erro ao gerar arquivo");
+            }
+        });
+         
         oJFrame.setVisible(true);
     }
 }
