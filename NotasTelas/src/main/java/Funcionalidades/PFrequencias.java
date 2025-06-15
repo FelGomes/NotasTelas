@@ -35,8 +35,6 @@ public class PFrequencias {
                 freq.setFrequencias_faltas(rs.getInt("frequencias_faltas"));
                 freq.setPrctg_presenca(rs.getFloat("prctg_presenca"));
                 freq.setFrequencias_disciplinas(rs.getString("frequencias_disciplinas"));
-                freq.setProfessor_nome(rs.getString("professor_nome"));
-                freq.setAluno_nome(rs.getString("aluno_nome"));
 
                 lista.add(freq);
             }
@@ -62,7 +60,7 @@ public class PFrequencias {
             stmt.setInt(3, freq.getFrequencias_faltas());
             stmt.setFloat(4, freq.getPrctg_presenca());
             stmt.setString(5, freq.getFrequencias_disciplinas().toUpperCase());
-            stmt.setInt(6, freq.getProfessores());
+            stmt.setInt(6, freq.getProfessores().getIdProfessor());
             stmt.setInt(7, freq.getAluno().getUsuario_id());
 
             stmt.executeUpdate();
@@ -87,7 +85,7 @@ public class PFrequencias {
             stmt.setInt(3, freq.getFrequencias_faltas());
             stmt.setFloat(4, freq.getPrctg_presenca());
             stmt.setString(5, freq.getFrequencias_disciplinas().toUpperCase());
-            stmt.setInt(6, freq.getProfessores());
+            stmt.setInt(6, freq.getProfessores().getIdProfessor());
             stmt.setInt(7, freq.getAluno().getUsuario_id());
             stmt.setInt(8, freq.getFrequencias_id());
 
