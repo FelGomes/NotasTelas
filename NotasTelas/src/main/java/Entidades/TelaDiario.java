@@ -128,7 +128,7 @@ public class TelaDiario {
                 d.setQtd_alunos(Integer.parseInt(campoQtdAlunos.getText()));
                 d.setFk_diarios_professores_(Integer.parseInt(campoFkProfessor.getText()));
                 d.setFk_diarios_alunos_(Integer.parseInt(campoFkAluno.getText()));
-                String resultado = pDiario.inserir(d);
+                String resultado = pDiario.salvar(d);
                 JOptionPane.showMessageDialog(null, resultado);
                 atualizarTabela(tabela, pDiario.listar(""));
                 limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
@@ -196,6 +196,34 @@ public class TelaDiario {
 
         janela.setVisible(true);
      }
-    
+     private static boolean validarCampos(JTextField... campos) {
+        for (JTextField campo : campos) {
+            if (campo.getText().trim().isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static void limparCampos(JTextField... campos) {
+        for (JTextField campo : campos) {
+            campo.setText("");
+        }
+    }
+    private static void atualizarTabela(JTable tabela, ArrayList<EDiario> lista) {
+        String[] colunas = {"ID", "Local", "Disciplinas", "Qtd Alunos", "ID Professor", "ID Aluno"};
+        String[][] dados = new String[lista.size()][6];
+
+        for (int i = 0; i < lista.size(); i++) {
+            EDiario d = lista.get(i);
+            dados[i][0] = String.valueOf(d.getDiarios_id());
+            dados[i][1] = d.getDiarios_local();
+            dados[i][2] = d.getDiarios_disciplinas();
+            dados[i][3] = String.valueOf(d.getQtd_alunos());
+            dados[i][4] = String.valueOf(d.getFk_diarios_professores_());
+            dados[i][5] = String.valueOf(d.getFk_diarios_alunos_());
+        }
+        tabela.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
+    }
 }
 
