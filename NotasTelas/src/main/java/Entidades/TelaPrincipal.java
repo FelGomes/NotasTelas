@@ -90,6 +90,104 @@ public class TelaPrincipal {
         buttonProf.add(labelProf);
         jFrameInicial.add(buttonProf);
         
+        buttonUsuario.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                try {
+                    jFrameInicial.dispose();
+                    Usuarios.montarTelaUsuario();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    System.out.println(e1.getMessage());
+                }
+
+            }
+        });
+        
+        buttonAlunos.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                try {
+                    jFrameInicial.dispose();
+                    TelaAlunos.montarTela();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    System.out.println(e1.getMessage());
+                }
+
+            }
+        });
+        
+        buttonBoletim.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                try {
+                    jFrameInicial.dispose();
+                    TelaBoletim.montarTela();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    System.out.println(e1.getMessage());
+                }
+
+            }
+        });
+        
+        buttonNotas.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                try {
+                    jFrameInicial.dispose();
+                    TelaNotas.montarTela();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    System.out.println(e1.getMessage());
+                }
+
+            }
+        });
+        
+        buttonInstit.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                try {
+                    jFrameInicial.dispose();
+                    TelaInstituicao.montarTela();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    System.out.println(e1.getMessage());
+                }
+
+            }
+        });
+        
+        buttonProf.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                try {
+                    jFrameInicial.dispose();
+                    TelaProfessores.montarTela();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    System.out.println(e1.getMessage());
+                }
+
+            }
+        });
+
+        
+        
         
         // ainda falta adicionar as funcionalidades!
         jFrameInicial.setVisible(true);
