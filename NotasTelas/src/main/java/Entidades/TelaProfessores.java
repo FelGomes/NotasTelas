@@ -5,6 +5,7 @@ import javax.swing.table.DefaultTableModel;
 import java.io.IOException;
 import java.util.List;
 import Funcionalidades.PProfessor;
+import java.util.ArrayList;
 
 public class TelaProfessores {
 
@@ -113,6 +114,15 @@ public class TelaProfessores {
         JButton btnGerarArquivo = new JButton("Gerar arquivo");
         btnGerarArquivo.setBounds(540, 555, 130, 30);
         oJFrame.add(btnGerarArquivo);
+        
+        
+        JButton btnFiltar = new JButton("Filtar");
+        btnFiltar.setBounds(620, 510, 130, 30);
+        oJFrame.add(btnFiltar);
+        
+        JTextField campoFiltro = new JTextField();
+        campoFiltro.setBounds(430, 510, 180, 30);
+        oJFrame.add(campoFiltro);
 
         tabela.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -125,26 +135,63 @@ public class TelaProfessores {
                 }
             }
         });
+        
+        
+        btnFiltar.addActionListener(e -> {
+            String nomeBusca = campoFiltro.getText().trim();
+            if (nomeBusca.isEmpty()) {
+                atualizarTabela.run(); // Volta para a lista completa
+                return;
+            }
+            try {
+                List<Object[]> filtrados = dao.buscarProfessoresPorNome(nomeBusca);
+                atualizarTabela(modelo, filtrados); // Agora funciona corretamente
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Erro ao filtrar professores.");
+            }
+        });
+
+
+
 
         btnInserir.addActionListener(e -> {
+            // Verificação de campos obrigatórios
+            if (oJTextID.getText().trim().isEmpty()
+                    || oJTextDISCIPLINA.getText().trim().isEmpty()
+                    || oJTextTURMA.getText().trim().isEmpty()
+                    || oJTextTITULARIDADE.getText().trim().isEmpty()) {
+
+                JOptionPane.showMessageDialog(null, "Preencha todos os campos!", "Aviso", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             try {
                 int id = Integer.parseInt(oJTextID.getText());
+
                 if (dao.usuarioEhAluno(id)) {
                     JOptionPane.showMessageDialog(null, "Este usuário já é um aluno!");
                     return;
                 }
+
                 if (dao.usuarioEhProfessor(id)) {
                     JOptionPane.showMessageDialog(null, "Este usuário já é um professor!");
                     return;
                 }
 
-                dao.inserirProfessor(id, oJTextDISCIPLINA.getText(), oJTextTURMA.getText(), oJTextTITULARIDADE.getText());
+                dao.inserirProfessor(id,
+                        oJTextDISCIPLINA.getText(),
+                        oJTextTURMA.getText(),
+                        oJTextTITULARIDADE.getText());
+
                 JOptionPane.showMessageDialog(null, "Professor inserido com sucesso!");
                 atualizarTabela.run();
+
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "ID inválido.");
             }
         });
+
 
         btnAtualizar.addActionListener(e -> {
             try {
@@ -187,4 +234,14 @@ public class TelaProfessores {
          
         oJFrame.setVisible(true);
     }
+    
+    
+    
+     private static void atualizarTabela(DefaultTableModel modelo, List<Object[]> dados) {
+        modelo.setRowCount(0); // Limpa o conteúdo atual
+        for (Object[] linha : dados) {
+            modelo.addRow(linha); // Adiciona cada nova linha
+        }
+    }
+
 }
