@@ -96,6 +96,28 @@ public class TelaDiario {
         JButton botaoCancelar = new JButton("CANCELAR");
         botaoCancelar.setBounds(520, 140, 90, 25);
         janela.add(botaoCancelar);
+        //Tabela 
+        JTable tabela = new JTable();
+        JScrollPane scroll = new JScrollPane(tabela);
+        scroll.setBounds(20, 180, 600, 300);
+        janela.add(scroll);
         
+        PDiario pDiario = new PDiario();
+        atualizarTabela(tabela, pDiario.listar(""));
+        final int[] idSelecionado = {-1};
+
+        tabela.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                int linha = tabela.getSelectedRow();
+                idSelecionado[0] = Integer.parseInt(tabela.getValueAt(linha, 0).toString());
+                campoLocal.setText(tabela.getValueAt(linha, 1).toString());
+                campoDisciplinas.setText(tabela.getValueAt(linha, 2).toString());
+                campoQtdAlunos.setText(tabela.getValueAt(linha, 3).toString());
+                campoFkProfessor.setText(tabela.getValueAt(linha, 4).toString());
+                campoFkAluno.setText(tabela.getValueAt(linha, 5).toString());
+                botaoAlterar.setEnabled(true);
+                botaoExcluir.setEnabled(true);
+            }
+        });
     }
 }
