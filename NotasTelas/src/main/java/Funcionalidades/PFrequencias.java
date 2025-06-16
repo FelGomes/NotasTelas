@@ -39,11 +39,11 @@ public class PFrequencias {
             while (rs.next()) {
                 EFrequencias freq = new EFrequencias();
                 freq.setFrequencias_id(rs.getInt("frequencias_id"));
-                freq.setTotal_aulas(rs.getInt("total_aulas"));
-                freq.setAulas_ministradas(rs.getInt("aulas_ministradas"));
-                freq.setFrequencias_faltas(rs.getInt("frequencias_faltas"));
-                freq.setPrctg_presenca(rs.getFloat("prctg_presenca"));
-                freq.setFrequencias_disciplinas(rs.getString("frequencias_disciplinas"));
+                freq.setTotal_aulas(rs.getInt("aulas_ministradas"));
+                freq.setAulas_ministradas(rs.getInt("frequencias_faltas"));
+                freq.setFrequencias_faltas(rs.getInt("prctg_presenca"));    
+                freq.setPrctg_presenca(rs.getFloat("frequencias_disciplinas"));
+                freq.setFrequencias_disciplinas(rs.getString("total_aulas"));
 
                 // Professor
                 EProfessor prof = new EProfessor();
