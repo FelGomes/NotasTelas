@@ -5,7 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import conexao.Conexao;
+import Funcionalidades.EFrequencias;
+import Funcionalidades.EProfessor;
+import Funcionalidades.EAlunos;
 
 public class PFrequencias {
 
@@ -13,15 +17,20 @@ public class PFrequencias {
     public ArrayList<EFrequencias> listarFrequencias() {
         ArrayList<EFrequencias> lista = new ArrayList<>();
 
-        String sql = "SELECT f.frequencias_id, f.total_aulas, f.aulas_ministradas, f.frequencias_faltas, " +
-                     "f.prctg_presenca, f.frequencias_disciplinas, " +
-                     "uprof.usuarios_nome AS professor_nome, " +
-                     "ualuno.usuarios_nome AS aluno_nome " +
-                     "FROM frequencias f " +
-                     "INNER JOIN professores p ON f.fk_frequencias_professores_id = p.professores_id " +
-                     "INNER JOIN usuarios uprof ON p.fk_professores_usuarios_id = uprof.usuarios_id " +
-                     "INNER JOIN alunos a ON f.fk_frequencias_alunos_id = a.alunos_id " +
-                     "INNER JOIN usuarios ualuno ON a.fk_alunos_usuarios_id = ualuno.usuarios_id";
+        String sql = "SELECT f.frequencias_id, "
+                        + "f.aulas_ministradas, "
+                        + "f.frequencias_faltas, "
+                        + "f.prctg_presenca, "
+                        + "f.frequencias_disciplinas, "
+                        + "uprof.usuarios_nome as professor_nome, "
+                        + "ualuno.usuarios_nome as aluno_nome, "
+                        + "f.total_aulas "
+                        + "FROM frequencias f "
+                        + "INNER JOIN professores p ON f.fk_frequencias_professores_id = p.professores_id "
+                        + "INNER JOIN usuarios uprof ON p.fk_professores_usuarios_id = uprof.usuarios_id "
+                        + "INNER JOIN alunos a ON f.fk_frequencias_alunos_id = a.alunos_id "
+                        + "INNER JOIN usuarios ualuno ON a.fk_alunos_usuarios_id = ualuno.usuarios_id " 
+                        + "WHERE f.frequencias_id = ?";
 
         try (Connection conexao = new Conexao().getConexao();
              PreparedStatement stmt = conexao.prepareStatement(sql);
@@ -30,17 +39,28 @@ public class PFrequencias {
             while (rs.next()) {
                 EFrequencias freq = new EFrequencias();
                 freq.setFrequencias_id(rs.getInt("frequencias_id"));
-                freq.setTotal_aulas(rs.getInt("total_aulas"));
-                freq.setAulas_ministradas(rs.getInt("aulas_ministradas"));
-                freq.setFrequencias_faltas(rs.getInt("frequencias_faltas"));
-                freq.setPrctg_presenca(rs.getFloat("prctg_presenca"));
-                freq.setFrequencias_disciplinas(rs.getString("frequencias_disciplinas"));
+                freq.setTotal_aulas(rs.getInt("aulas_ministradas"));
+                freq.setAulas_ministradas(rs.getInt("frequencias_faltas"));
+                freq.setFrequencias_faltas(rs.getInt("prctg_presenca"));    
+                freq.setPrctg_presenca(rs.getFloat("frequencias_disciplinas"));
+                freq.setFrequencias_disciplinas(rs.getString("total_aulas"));
+
+                // Professor
+                EProfessor prof = new EProfessor();
+                prof.setIdProfessor(rs.getInt("professor_id"));
+                freq.setProfessores(prof);
+
+                // Aluno
+                EAlunos aluno = new EAlunos();
+                aluno.setUsuario_id(rs.getInt("aluno_id"));
+                aluno.setNome(rs.getString("aluno_nome"));
+                freq.setAluno(aluno);
 
                 lista.add(freq);
             }
 
         } catch (SQLException e) {
-            System.out.println("Erro na listagem de frequências: " + e.getMessage());
+            System.err.println("Erro na listagem de frequências: " + e.getMessage());
         }
 
         return lista;
@@ -48,10 +68,8 @@ public class PFrequencias {
 
     // Incluir frequência
     public String incluirFrequencia(EFrequencias freq) {
-        String sql = "INSERT INTO frequencias (total_aulas, aulas_ministradas, frequencias_faltas, prctg_presenca, " +
-                     "frequencias_disciplinas, fk_frequencias_professores_id, fk_frequencias_alunos_id) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
+        String sql = "INSERT INTO frequencias (total_aulas, aulas_ministradas, frequencias_faltas, prctg_presenca, frequencias_disciplinas,fk_frequencias_professores_id, fk_frequencias_alunos_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        
         try (Connection conexao = new Conexao().getConexao();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
@@ -59,9 +77,9 @@ public class PFrequencias {
             stmt.setInt(2, freq.getAulas_ministradas());
             stmt.setInt(3, freq.getFrequencias_faltas());
             stmt.setFloat(4, freq.getPrctg_presenca());
-            stmt.setString(5, freq.getFrequencias_disciplinas().toUpperCase());
+            stmt.setString(5, freq.getFrequencias_disciplinas());
             stmt.setInt(6, freq.getProfessores().getIdProfessor());
-            stmt.setInt(7, freq.getAluno().getUsuario_id());
+            stmt.setInt(7, freq.getAluno().getUsuario_id()); // Corrigido
 
             stmt.executeUpdate();
             return "Inclusão efetuada com sucesso!";
@@ -74,7 +92,7 @@ public class PFrequencias {
     // Alterar frequência
     public String alterarFrequencia(EFrequencias freq) {
         String sql = "UPDATE frequencias SET total_aulas = ?, aulas_ministradas = ?, frequencias_faltas = ?, " +
-                     "prctg_presenca = ?, frequencias_disciplinas = ?, fk_frequencias_professores_id = ?, " +
+                     "prctg_presenca = ?, frequencias_disciplinas = UPPER(?), fk_frequencias_professores_id = ?, " +
                      "fk_frequencias_alunos_id = ? WHERE frequencias_id = ?";
 
         try (Connection conexao = new Conexao().getConexao();
@@ -84,9 +102,9 @@ public class PFrequencias {
             stmt.setInt(2, freq.getAulas_ministradas());
             stmt.setInt(3, freq.getFrequencias_faltas());
             stmt.setFloat(4, freq.getPrctg_presenca());
-            stmt.setString(5, freq.getFrequencias_disciplinas().toUpperCase());
+            stmt.setString(5, freq.getFrequencias_disciplinas());
             stmt.setInt(6, freq.getProfessores().getIdProfessor());
-            stmt.setInt(7, freq.getAluno().getUsuario_id());
+            stmt.setInt(7, freq.getAluno().getUsuario_id()); // Corrigido
             stmt.setInt(8, freq.getFrequencias_id());
 
             stmt.executeUpdate();
