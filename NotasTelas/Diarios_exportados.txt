@@ -1,0 +1,8 @@
+4;sala 90;matematica;78;2;6
+9;sala 55;null;0;0;6
+10;ada;null;0;0;6
+11;sala 123;null;0;0;6
+13;adada;null;0;0;6
+14;mubuunij;null;0;0;6
+15;233123;null;0;0;6
+16;asdad;null;0;0;6
