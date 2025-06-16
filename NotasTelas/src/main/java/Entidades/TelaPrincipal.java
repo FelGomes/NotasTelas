@@ -119,6 +119,24 @@ public class TelaPrincipal {
         buttonFreq.add(labelFreq);
         jFrameInicial.add(buttonFreq);
         
+        buttonFreq.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                try {
+                    jFrameInicial.dispose();
+                    TelaFrequencias.MontarTelaFrequencia();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    System.out.println(e1.getMessage());
+                } catch (SQLException ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        });
+        
         buttonDia.addMouseListener(new MouseAdapter() {
 
             @Override
