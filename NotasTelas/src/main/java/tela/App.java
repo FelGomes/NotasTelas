@@ -29,6 +29,21 @@ public class App {
        TelaPrincipal.montarTelaInicial();
 
 
+       //TelaNotas.montarTelaNotas(); -> fazer o campo filtro e arrumar para o nome do aluno aparecer, 
+      
+       //TelaNotas.montarTelaNotas(); -> certo
+       //TelaDiario.montarTelaDiario();
+       //TelaProfessores.montarTelaProfessor(); certo
+       //TelaNotas.montarTelaNotas();
+       //TelaFrequencias.MontarTelaFrequencia();
+       TelaPrincipal.montarTelaInicial();
+
+       //TelaNotas.montarTelaNotas(); -> certo
+       //TelaProfessores.montarTelaProfessor(); certo
+       //TelaNotas.montarTelaNotas();
+       TelaFrequencias.MontarTelaFrequencia();
+       //TelaPrincipal.montarTelaInicial();
+
     }
     
     
