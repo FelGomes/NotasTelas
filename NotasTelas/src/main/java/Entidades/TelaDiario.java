@@ -1,251 +1,235 @@
-
 package Entidades;
 
-/**
- *
- * @author Kauã Luiz
- */
 import Funcionalidades.EDiario;
 import Funcionalidades.PDiario;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class TelaDiario {
-    public static void montarTelaDiario() throws IOException, SQLException {
 
-        JFrame janela = new JFrame("Gerenciar Diário");
-        janela.setBounds(200, 150, 650, 550);
-        janela.setLayout(null);
+    private static JFrame frame;
+    private static JTable tabela;
+    private static JTextField tfLocal, tfDisciplinas, tfQtdAlunos, tfFiltro;
+    private static JTextField tfProfessoresId, tfAlunosId;
+    private static DefaultTableModel modeloTabela;
+    private static PDiario pDiario = new PDiario();
+    private static int idSelecionado = -1;
 
-        // Labels e campos
-        JLabel labelLocal = new JLabel("Local:");
-        labelLocal.setBounds(20, 20, 80, 25);
-        janela.add(labelLocal);
+    public static void montarTelaDiario() {
+        frame = new JFrame("Gerenciar Diário");
+        frame.setSize(800, 600);
+        frame.setLayout(null);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
 
-        JTextField campoLocal = new JTextField();
-        campoLocal.setBounds(100, 20, 200, 25);
-        janela.add(campoLocal);
+        JLabel lbLocal = new JLabel("Local:");
+        lbLocal.setBounds(20, 20, 100, 25);
+        frame.add(lbLocal);
 
-        JLabel labelDisciplinas = new JLabel("Disciplinas:");
-        labelDisciplinas.setBounds(20, 60, 80, 25);
-        janela.add(labelDisciplinas);
+        tfLocal = new JTextField();
+        tfLocal.setBounds(120, 20, 200, 25);
+        frame.add(tfLocal);
 
-        JTextField campoDisciplinas = new JTextField();
-        campoDisciplinas.setBounds(100, 60, 200, 25);
-        janela.add(campoDisciplinas);
+        JLabel lbDisciplinas = new JLabel("Disciplinas:");
+        lbDisciplinas.setBounds(20, 60, 100, 25);
+        frame.add(lbDisciplinas);
 
-        JLabel labelQtdAlunos = new JLabel("Qtd Alunos:");
-        labelQtdAlunos.setBounds(20, 100, 80, 25);
-        janela.add(labelQtdAlunos);
+        tfDisciplinas = new JTextField();
+        tfDisciplinas.setBounds(120, 60, 200, 25);
+        frame.add(tfDisciplinas);
 
-        JTextField campoQtdAlunos = new JTextField();
-        campoQtdAlunos.setBounds(100, 100, 200, 25);
-        janela.add(campoQtdAlunos);
+        JLabel lbQtdAlunos = new JLabel("Qtd Alunos:");
+        lbQtdAlunos.setBounds(20, 100, 100, 25);
+        frame.add(lbQtdAlunos);
 
-        JLabel labelFkProfessor = new JLabel("ID Professor:");
-        labelFkProfessor.setBounds(320, 20, 100, 25);
-        janela.add(labelFkProfessor);
+        tfQtdAlunos = new JTextField();
+        tfQtdAlunos.setBounds(120, 100, 200, 25);
+        frame.add(tfQtdAlunos);
 
-        JTextField campoFkProfessor = new JTextField();
-        campoFkProfessor.setBounds(420, 20, 200, 25);
-        janela.add(campoFkProfessor);
+        JLabel lbProfessoresId = new JLabel("ID Professor:");
+        lbProfessoresId.setBounds(20, 140, 100, 25);
+        frame.add(lbProfessoresId);
 
-        JLabel labelFkAluno = new JLabel("ID Aluno:");
-        labelFkAluno.setBounds(320, 60, 100, 25);
-        janela.add(labelFkAluno);
+        tfProfessoresId = new JTextField();
+        tfProfessoresId.setBounds(120, 140, 200, 25);
+        frame.add(tfProfessoresId);
 
-        JTextField campoFkAluno = new JTextField();
-        campoFkAluno.setBounds(420, 60, 200, 25);
-        janela.add(campoFkAluno);
+        JLabel lbAlunosId = new JLabel("ID Aluno:");
+        lbAlunosId.setBounds(20, 180, 100, 25);
+        frame.add(lbAlunosId);
+
+        tfAlunosId = new JTextField();
+        tfAlunosId.setBounds(120, 180, 200, 25);
+        frame.add(tfAlunosId);
 
         // Botões
-        JButton botaoSalvar = new JButton("SALVAR");
-        botaoSalvar.setBounds(320, 100, 90, 25);
-        janela.add(botaoSalvar);
+        JButton btnSalvar = new JButton("Salvar");
+        btnSalvar.setBounds(350, 20, 100, 25);
+        frame.add(btnSalvar);
 
-        JButton botaoAlterar = new JButton("ALTERAR");
-        botaoAlterar.setBounds(420, 100, 90, 25);
-        botaoAlterar.setEnabled(false);
-        janela.add(botaoAlterar);
+        JButton btnAlterar = new JButton("Alterar");
+        btnAlterar.setBounds(350, 60, 100, 25);
+        frame.add(btnAlterar);
 
-        JButton botaoExcluir = new JButton("EXCLUIR");
-        botaoExcluir.setBounds(520, 100, 90, 25);
-        botaoExcluir.setEnabled(false);
-        janela.add(botaoExcluir);
+        JButton btnExcluir = new JButton("Excluir");
+        btnExcluir.setBounds(350, 100, 100, 25);
+        frame.add(btnExcluir);
 
-        JLabel labelFiltro = new JLabel("Filtrar (Local):");
-        labelFiltro.setBounds(20, 140, 120, 25);
-        janela.add(labelFiltro);
+        JLabel lbFiltro = new JLabel("Filtrar Local:");
+        lbFiltro.setBounds(20, 230, 100, 25);
+        frame.add(lbFiltro);
 
-        JTextField campoFiltro = new JTextField();
-        campoFiltro.setBounds(140, 140, 160, 25);
-        janela.add(campoFiltro);
+        tfFiltro = new JTextField();
+        tfFiltro.setBounds(120, 230, 200, 25);
+        frame.add(tfFiltro);
 
-        JButton botaoFiltrar = new JButton("FILTRAR");
-        botaoFiltrar.setBounds(320, 140, 90, 25);
-        janela.add(botaoFiltrar);
+        JButton btnFiltrar = new JButton("Filtrar");
+        btnFiltrar.setBounds(350, 230, 100, 25);
+        frame.add(btnFiltrar);
 
-        JButton botaoGerarArquivo = new JButton("GERAR ARQ");
-        botaoGerarArquivo.setBounds(420, 140, 90, 25);
-        janela.add(botaoGerarArquivo);
+        JButton btnGerarArquivo = new JButton("Gerar Arquivo");
+        btnGerarArquivo.setBounds(480, 230, 140, 25);
+        frame.add(btnGerarArquivo);
 
-        JButton botaoCancelar = new JButton("CANCELAR");
-        botaoCancelar.setBounds(520, 140, 90, 25);
-        janela.add(botaoCancelar);
-        //Tabela 
-        JTable tabela = new JTable();
-        JScrollPane scroll = new JScrollPane(tabela);
-        scroll.setBounds(20, 180, 600, 300);
-        janela.add(scroll);
-        
-        PDiario pDiario = new PDiario();
-        atualizarTabela(tabela, pDiario.listar(""));
-        final int[] idSelecionado = {-1};
+        // Tabela
+        modeloTabela = new DefaultTableModel(
+                new Object[]{"ID", "Local", "Disciplinas", "Qtd Alunos", "ID Professor", "ID Aluno"}, 0
+        );
+        tabela = new JTable(modeloTabela);
+        JScrollPane scrollPane = new JScrollPane(tabela);
+        scrollPane.setBounds(20, 270, 740, 280);
+        frame.add(scrollPane);
 
+        // Ações dos botões
+        btnSalvar.addActionListener(e -> salvarDiario());
+
+        btnAlterar.addActionListener(e -> alterarDiario());
+
+        btnExcluir.addActionListener(e -> excluirDiario());
+
+        btnFiltrar.addActionListener(e -> listarDiarios(tfFiltro.getText().trim()));
+
+        btnGerarArquivo.addActionListener(e -> gerarArquivo());
+
+        // Evento para carregar dados ao clicar na tabela
         tabela.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int linha = tabela.getSelectedRow();
-                idSelecionado[0] = Integer.parseInt(tabela.getValueAt(linha, 0).toString());
-                campoLocal.setText(tabela.getValueAt(linha, 1).toString());
-                campoDisciplinas.setText(tabela.getValueAt(linha, 2).toString());
-                campoQtdAlunos.setText(tabela.getValueAt(linha, 3).toString());
-                campoFkProfessor.setText(tabela.getValueAt(linha, 4).toString());
-                campoFkAluno.setText(tabela.getValueAt(linha, 5).toString());
-                botaoAlterar.setEnabled(true);
-                botaoExcluir.setEnabled(true);
-                
-            }
-        });
-        botaoSalvar.addActionListener(e -> {
-            if (validarCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno)) {
-                EDiario d = new EDiario();
-                //abreviar para deixar o código menor para a leitura
-                d.setDiarios_local(campoLocal.getText());
-                d.setDiarios_disciplinas(campoDisciplinas.getText());
-                d.setQtd_alunos(Integer.parseInt(campoQtdAlunos.getText()));
-                d.setFk_diarios_professores_(Integer.parseInt(campoFkProfessor.getText()));
-                d.setFk_diarios_alunos_(Integer.parseInt(campoFkAluno.getText()));
-                String resultado = pDiario.salvar(d);
-                JOptionPane.showMessageDialog(null, resultado);
-                atualizarTabela(tabela, pDiario.listar(""));
-                limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
-               
-            } else {
-                JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos.");
-            }
-        });
-        botaoAlterar.addActionListener(e -> {
-            if (idSelecionado[0] != -1 && validarCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno)) {
-                EDiario d = new EDiario();
-                d.setDiarios_id(idSelecionado[0]);
-                System.out.println("ID Selecionado: " + idSelecionado[0]);
-                d.setDiarios_local(campoLocal.getText());
-                d.setDiarios_disciplinas(campoDisciplinas.getText());
-                d.setQtd_alunos(Integer.parseInt(campoQtdAlunos.getText()));
-                d.setFk_diarios_professores_(Integer.parseInt(campoFkProfessor.getText()));
-                d.setFk_diarios_alunos_(Integer.parseInt(campoFkAluno.getText()));
-                String resultado = pDiario.alterar(d);
-                JOptionPane.showMessageDialog(null, resultado);
-                atualizarTabela(tabela, pDiario.listar(""));
-                limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
-                idSelecionado[0] = -1; // Resetar seleção
-                
-            } else if (idSelecionado[0] == -1) {
-                JOptionPane.showMessageDialog(null, "Selecione um diário para alterar.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos.");
-            }
-        });
-        botaoExcluir.addActionListener(e -> {
-            if (idSelecionado[0] != -1) {
-                int confirmacao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir este diário?", "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
-                if (confirmacao == JOptionPane.YES_OPTION) {
-                    String resultado = pDiario.deletar(idSelecionado[0]);
-                    System.out.println("ID Selecionado: " + idSelecionado[0]);
-                    JOptionPane.showMessageDialog(null, resultado);
-                    atualizarTabela(tabela, pDiario.listar(""));
-                    limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
-                    idSelecionado[0] = -1; // Resetar seleção
-                    botaoAlterar.setEnabled(false);
-                    botaoExcluir.setEnabled(false);
+                if (linha != -1) {
+                    idSelecionado = Integer.parseInt(modeloTabela.getValueAt(linha, 0).toString());
+                    tfLocal.setText(modeloTabela.getValueAt(linha, 1).toString());
+                    tfDisciplinas.setText(modeloTabela.getValueAt(linha, 2).toString());
+                    tfQtdAlunos.setText(modeloTabela.getValueAt(linha, 3).toString());
+                    tfProfessoresId.setText(modeloTabela.getValueAt(linha, 4).toString());
+                    tfAlunosId.setText(modeloTabela.getValueAt(linha, 5).toString());
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "Selecione um diário para excluir.");
             }
         });
 
-        botaoFiltrar.addActionListener(e -> {
-            atualizarTabela(tabela, pDiario.listar(campoFiltro.getText()));
-        });
+        // Listar inicialmente tudo
+        listarDiarios("");
 
-        botaoCancelar.addActionListener(e -> {
-            // Limpa os campos e desabilita botões
-            limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
-            campoFiltro.setText("");
-            idSelecionado[0] = -1;
-            botaoAlterar.setEnabled(false);
-            botaoExcluir.setEnabled(false);
-            atualizarTabela(tabela, pDiario.listar("")); // Recarrega a tabela completa
-        });
-        botaoGerarArquivo.addActionListener(e -> {
-    try {
-        ArrayList<String[]> lista = pDiario.listarDiarios();
-        String caminho = "/home/felipe/Documentos/GitHub/NotasTelas/Diarios.txt";
-
-        java.io.FileWriter writer = new java.io.FileWriter(caminho);
-
-        // Cabeçalho
-        writer.write("ID\tLocal\tDisciplinas\tQtd_Alunos\tFk_Professor\tFk_Aluno\n");
-
-        // Conteúdo
-        for (String[] diario : lista) {
-            writer.write(String.join("\t", diario) + "\n");
-        }
-
-        writer.close();
-        JOptionPane.showMessageDialog(null, "Arquivo de Diarios gerado com sucesso!");
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(null, "Erro ao gerar o arquivo: " + ex.getMessage());
+        frame.setVisible(true);
     }
-});
 
-        janela.setVisible(true);
-     }
-     private static boolean validarCampos(JTextField... campos) {
-        for (JTextField campo : campos) {
-            if (campo.getText().trim().isEmpty()) {
-                return false;
+    private static void salvarDiario() {
+        try {
+            EDiario d = new EDiario();
+            d.setDiarios_local(tfLocal.getText().trim());
+            d.setDiarios_disciplinas(tfDisciplinas.getText().trim());
+            d.setQtd_alunos(Integer.parseInt(tfQtdAlunos.getText().trim()));
+            d.setFk_diarios_professores_id(Integer.parseInt(tfProfessoresId.getText().trim()));
+            d.setFk_diarios_alunos_id(Integer.parseInt(tfAlunosId.getText().trim()));
+
+            String msg = pDiario.salvar(d);
+            JOptionPane.showMessageDialog(frame, msg);
+            listarDiarios("");
+            limparCampos();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(frame, "Preencha todos os campos corretamente (números).");
+        }
+    }
+
+    private static void alterarDiario() {
+        if (idSelecionado == -1) {
+            JOptionPane.showMessageDialog(frame, "Selecione um diário na tabela para alterar.");
+            return;
+        }
+        try {
+            EDiario d = new EDiario();
+            d.setDiarios_id(idSelecionado);
+            d.setDiarios_local(tfLocal.getText().trim());
+            d.setDiarios_disciplinas(tfDisciplinas.getText().trim());
+            d.setQtd_alunos(Integer.parseInt(tfQtdAlunos.getText().trim()));
+            d.setFk_diarios_professores_id(Integer.parseInt(tfProfessoresId.getText().trim()));
+            d.setFk_diarios_alunos_id(Integer.parseInt(tfAlunosId.getText().trim()));
+
+            String msg = pDiario.alterar(d);
+            JOptionPane.showMessageDialog(frame, msg);
+            listarDiarios("");
+            limparCampos();
+            idSelecionado = -1;
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(frame, "Preencha todos os campos corretamente (números).");
+        }
+    }
+
+    private static void excluirDiario() {
+        if (idSelecionado == -1) {
+            JOptionPane.showMessageDialog(frame, "Selecione um diário na tabela para excluir.");
+            return;
+        }
+        int confirm = JOptionPane.showConfirmDialog(frame, "Confirma exclusão?", "Excluir", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            String msg = pDiario.deletar(idSelecionado);
+            JOptionPane.showMessageDialog(frame, msg);
+            listarDiarios("");
+            limparCampos();
+            idSelecionado = -1;
+        }
+    }
+
+    private static void listarDiarios(String filtro) {
+        ArrayList<EDiario> lista = pDiario.listar(filtro);
+        modeloTabela.setRowCount(0); // limpa tabela
+
+        for (EDiario d : lista) {
+            modeloTabela.addRow(new Object[]{
+                d.getDiarios_id(),
+                d.getDiarios_local(),
+                d.getDiarios_disciplinas(),
+                d.getQtd_alunos(),
+                d.getFk_diarios_professores_id(),
+                d.getFk_diarios_alunos_id()
+            });
+        }
+    }
+
+    private static void limparCampos() {
+        tfLocal.setText("");
+        tfDisciplinas.setText("");
+        tfQtdAlunos.setText("");
+        tfProfessoresId.setText("");
+        tfAlunosId.setText("");
+        idSelecionado = -1;
+    }
+
+    private static void gerarArquivo() {
+        ArrayList<String[]> dados = pDiario.listarDiarios();
+
+        try (FileWriter fw = new FileWriter("Diarios_exportados.txt")) {
+            for (String[] linha : dados) {
+                fw.write(String.join(";", linha) + "\n");
             }
+            JOptionPane.showMessageDialog(frame, "Arquivo gerado com sucesso!");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(frame, "Erro ao gerar arquivo: " + e.getMessage());
         }
-        return true;
-    }
-
-            
-
-    private static void limparCampos(JTextField... campos) {
-        for (JTextField campo : campos) {
-            campo.setText("");
-        }
-    }
-    private static void atualizarTabela(JTable tabela, ArrayList<EDiario> lista) {
-        String[] colunas = {"ID", "Local", "Disciplinas", "Qtd Alunos", "ID Professor", "ID Aluno"};
-        String[][] dados = new String[lista.size()][6];
-
-        for (int i = 0; i < lista.size(); i++) {
-            EDiario d = lista.get(i);
-            dados[i][0] = String.valueOf(d.getDiarios_id());
-            dados[i][1] = d.getDiarios_local();
-            dados[i][2] = d.getDiarios_disciplinas();
-            dados[i][3] = String.valueOf(d.getQtd_alunos());
-            dados[i][4] = String.valueOf(d.getFk_diarios_professores_());
-            dados[i][5] = String.valueOf(d.getFk_diarios_alunos_());
-        }
-        tabela.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
     }
 }
-
