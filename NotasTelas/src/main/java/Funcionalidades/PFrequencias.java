@@ -17,17 +17,20 @@ public class PFrequencias {
     public ArrayList<EFrequencias> listarFrequencias() {
         ArrayList<EFrequencias> lista = new ArrayList<>();
 
-        String sql = "SELECT f.frequencias_id, f.total_aulas, f.aulas_ministradas, f.frequencias_faltas, " +
-                     "f.prctg_presenca, f.frequencias_disciplinas, " +
-                     "uprof.usuarios_nome AS professor_nome, uprof.usuarios_id AS professor_usuario_id, " +
-                     "p.professores_id AS professor_id, " +
-                     "ualuno.usuarios_nome AS aluno_nome, ualuno.usuarios_id AS aluno_usuario_id, " +
-                     "a.alunos_id AS aluno_id " +
-                     "FROM frequencias f " +
-                     "INNER JOIN professores p ON f.fk_frequencias_professores_id = p.professores_id " +
-                     "INNER JOIN usuarios uprof ON p.fk_professores_usuarios_id = uprof.usuarios_id " +
-                     "INNER JOIN alunos a ON f.fk_frequencias_alunos_id = a.alunos_id " +
-                     "INNER JOIN usuarios ualuno ON a.fk_alunos_usuarios_id = ualuno.usuarios_id";
+        String sql = "SELECT f.frequencias_id, "
+                        + "f.aulas_ministradas, "
+                        + "f.frequencias_faltas, "
+                        + "f.prctg_presenca, "
+                        + "f.frequencias_disciplinas, "
+                        + "uprof.usuarios_nome as professor_nome, "
+                        + "ualuno.usuarios_nome as aluno_nome, "
+                        + "f.total_aulas "
+                        + "FROM frequencias f "
+                        + "INNER JOIN professores p ON f.fk_frequencias_professores_id = p.professores_id "
+                        + "INNER JOIN usuarios uprof ON p.fk_professores_usuarios_id = uprof.usuarios_id "
+                        + "INNER JOIN alunos a ON f.fk_frequencias_alunos_id = a.alunos_id "
+                        + "INNER JOIN usuarios ualuno ON a.fk_alunos_usuarios_id = ualuno.usuarios_id " 
+                        + "WHERE f.frequencias_id = ?";
 
         try (Connection conexao = new Conexao().getConexao();
              PreparedStatement stmt = conexao.prepareStatement(sql);
