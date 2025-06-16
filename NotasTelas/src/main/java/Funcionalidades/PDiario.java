@@ -1,10 +1,5 @@
-
 package Funcionalidades;
 
-/**
- *
- * @author Kauã Luiz
- */
 import conexao.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PDiario {
+
     public String salvar(EDiario diario) {
         String sql = "INSERT INTO diarios (diarios_local, diarios_disciplinas, qtd_alunos, fk_diarios_professores_id, fk_diarios_alunos_id) VALUES (?, ?, ?, ?, ?)";
         try {
@@ -22,8 +18,8 @@ public class PDiario {
             stmt.setString(1, diario.getDiarios_local());
             stmt.setString(2, diario.getDiarios_disciplinas());
             stmt.setInt(3, diario.getQtd_alunos());
-            stmt.setInt(4, diario.getFk_diarios_professores_());
-            stmt.setInt(5, diario.getFk_diarios_alunos_());
+            stmt.setInt(4, diario.getFk_diarios_professores_id());
+            stmt.setInt(5, diario.getFk_diarios_alunos_id());
             stmt.executeUpdate();
             return "Diário cadastrado com sucesso!";
         } catch (SQLException e) {
@@ -40,8 +36,8 @@ public class PDiario {
             stmt.setString(1, diario.getDiarios_local());
             stmt.setString(2, diario.getDiarios_disciplinas());
             stmt.setInt(3, diario.getQtd_alunos());
-            stmt.setInt(4, diario.getFk_diarios_professores_());
-            stmt.setInt(5, diario.getFk_diarios_alunos_());
+            stmt.setInt(4, diario.getFk_diarios_professores_id());
+            stmt.setInt(5, diario.getFk_diarios_alunos_id());
             stmt.setInt(6, diario.getDiarios_id());
             stmt.executeUpdate();
             return "Diário alterado com sucesso!";
@@ -79,8 +75,8 @@ public class PDiario {
                 diario.setDiarios_local(rs.getString("diarios_local"));
                 diario.setDiarios_disciplinas(rs.getString("diarios_disciplinas"));
                 diario.setQtd_alunos(rs.getInt("qtd_alunos"));
-                diario.setFk_diarios_professores_(rs.getInt("fk_diarios_professores_id"));
-                diario.setFk_diarios_alunos_(rs.getInt("fk_diarios_alunos_id"));
+                diario.setFk_diarios_professores_id(rs.getInt("fk_diarios_professores_id"));
+                diario.setFk_diarios_alunos_id(rs.getInt("fk_diarios_alunos_id"));
                 lista.add(diario);
             }
         } catch (SQLException e) {
@@ -88,8 +84,8 @@ public class PDiario {
         }
         return lista;
     }
-    // Novo método: usado pelo botão Gerar Arquivo
-    // fazendo separado para previnir um cast forçado e pode dar problema em tempo de execução (ClassCastException) se usado errado.
+
+    // Método usado pelo botão Gerar Arquivo
     public ArrayList<String[]> listarDiarios() {
         ArrayList<String[]> listaString = new ArrayList<>();
         ArrayList<EDiario> listaObjetos = listar(""); // usa o método já existente
@@ -100,8 +96,8 @@ public class PDiario {
             linha[1] = diario.getDiarios_local();
             linha[2] = diario.getDiarios_disciplinas();
             linha[3] = String.valueOf(diario.getQtd_alunos());
-            linha[4] = String.valueOf(diario.getFk_diarios_professores_());
-            linha[5] = String.valueOf(diario.getFk_diarios_alunos_());
+            linha[4] = String.valueOf(diario.getFk_diarios_professores_id());
+            linha[5] = String.valueOf(diario.getFk_diarios_alunos_id());
             listaString.add(linha);
         }
         return listaString;
