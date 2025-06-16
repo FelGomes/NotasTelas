@@ -6,6 +6,7 @@ package tela;
 import Entidades.*;
 import java.io.IOException;
 import java.sql.SQLException;
+import Entidades.TelaFrequencias;
 
 /**
  *
@@ -25,7 +26,7 @@ public class App {
        TelaDiario.montarTelaDiario();
        //TelaProfessores.montarTelaProfessor(); certo
        //TelaNotas.montarTelaNotas();
-
+       TelaFrequencias.montarTelaFrequencia();
        //TelaFrequencias.montarTelaFrequencia();
        TelaPrincipal.montarTelaInicial();
 

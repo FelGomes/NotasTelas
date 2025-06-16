@@ -1,4 +1,4 @@
-package telas;
+package Entidades;
 
 import Funcionalidades.EAlunos;
 import Funcionalidades.EFrequencias;
