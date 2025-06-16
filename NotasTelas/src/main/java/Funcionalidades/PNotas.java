@@ -245,6 +245,7 @@ public class PNotas {
 
     
     
+    
     public void gerarArquivoNotas() throws IOException {
         List<Object[]> lista = listarNotas();
         FileWriter writer = new FileWriter("notas.txt");

@@ -27,6 +27,8 @@ public class App {
        //TelaNotas.montarTelaNotas();
        //TelaFrequencias.MontarTelaFrequencia();
        TelaPrincipal.montarTelaInicial();
+
+
     }
     
     
