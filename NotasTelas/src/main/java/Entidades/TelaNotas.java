@@ -141,6 +141,11 @@ public class TelaNotas {
         frame.add(lblFiltroDisciplina);
 
 
+        
+        JLabel FiltroDisciplina = new JLabel("Filtrar Disciplina:");
+        FiltroDisciplina.setBounds(400, startY + 2 * gapY + 5 + 35 + gapY, labelW, height);
+        frame.add(FiltroDisciplina);
+
         JTextField campoFiltro = new JTextField();
         campoFiltro.setBounds(500, startY + 2 * gapY + 5 + 35 + gapY, fieldW, height);
         frame.add(campoFiltro);
@@ -251,6 +256,7 @@ public class TelaNotas {
 
 
 
+        
         btnGerArquivo.addActionListener(e -> {
             try {
                 PNotas pNotas = new PNotas(); // instância da classe de persistência
@@ -299,4 +305,5 @@ public class TelaNotas {
 
     
 
+    
 }
