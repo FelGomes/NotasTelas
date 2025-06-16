@@ -134,10 +134,17 @@ public class TelaNotas {
         JButton btnGerArquivo = new JButton("Ger.Arq");
         btnGerArquivo.setBounds(520, startY + 2*gapY + 5 + 35, 100, 30);
         frame.add(btnGerArquivo);
+
         
         JLabel lblFiltroDisciplina = new JLabel("Filtrar Disciplina:");
         lblFiltroDisciplina.setBounds(400, startY + 2 * gapY + 5 + 35 + gapY, labelW, height);
         frame.add(lblFiltroDisciplina);
+
+
+        
+        JLabel FiltroDisciplina = new JLabel("Filtrar Disciplina:");
+        FiltroDisciplina.setBounds(400, startY + 2 * gapY + 5 + 35 + gapY, labelW, height);
+        frame.add(FiltroDisciplina);
 
         JTextField campoFiltro = new JTextField();
         campoFiltro.setBounds(500, startY + 2 * gapY + 5 + 35 + gapY, fieldW, height);
@@ -231,6 +238,7 @@ public class TelaNotas {
             }
         });
         
+
         btnFiltar.addActionListener(e -> {
             String textoFiltro = campoFiltro.getText().trim();
             if (textoFiltro.isEmpty()) {
@@ -245,6 +253,7 @@ public class TelaNotas {
                 JOptionPane.showMessageDialog(frame, "Erro ao filtrar notas por disciplina.");
             }
         });
+
 
 
         
@@ -286,6 +295,7 @@ public class TelaNotas {
         frame.setVisible(true);
     }
     
+
     private static void atualizarTabela(DefaultTableModel modelo, List<Object[]> dados) {
         modelo.setRowCount(0); // Limpa o conteúdo atual da tabela
         for (Object[] linha : dados) {
@@ -294,5 +304,6 @@ public class TelaNotas {
 }
 
     
+
     
 }

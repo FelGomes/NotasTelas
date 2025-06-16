@@ -1,6 +1,6 @@
-
 package Funcionalidades;
 
+import conexao.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +14,8 @@ import java.util.ArrayList;
 public class PMatricula {
     public String salvarMatricula(EMatricula m) {
         try {
-            Connection con = Conexao.getConexao();
+            Conexao conexao = new Conexao();
+            Connection con = conexao.getConexao();
             String sql = "INSERT INTO matriculas (data_inicio, data_fim, qtd_tempo, fk_instituicao_id, fk_aluno_id) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, m.getData_inicio());
@@ -31,7 +32,8 @@ public class PMatricula {
     
     public String alterarMatricula(EMatricula m) {
         try {
-            Connection con = Conexao.getConexao();
+            Conexao conexao = new Conexao();
+            Connection con = conexao.getConexao();
             String sql = "UPDATE matriculas SET data_inicio=?, data_fim=?, qtd_tempo=?, fk_instituicao_id=?, fk_aluno_id=? WHERE matriculas_id=?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, m.getData_inicio());
@@ -49,7 +51,8 @@ public class PMatricula {
     
     public String excluirMatricula(int id) {
         try {
-            Connection con = Conexao.getConexao();
+            Conexao conexao = new Conexao();
+            Connection con = conexao.getConexao();
             String sql = "DELETE FROM matriculas WHERE matriculas_id=?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, id);
@@ -63,7 +66,8 @@ public class PMatricula {
     public ArrayList<EMatricula> consultarMatricula(String filtro) {
         ArrayList<EMatricula> lista = new ArrayList<>();
         try {
-            Connection con = Conexao.getConexao();
+            Conexao conexao = new Conexao();
+            Connection con = conexao.getConexao();
             String sql = "SELECT * FROM matriculas WHERE fk_aluno_id LIKE ?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, "%" + filtro + "%");
@@ -83,6 +87,30 @@ public class PMatricula {
             System.out.println("Erro ao consultar matrícula: " + e.getMessage());
         }
         return lista;
+    }   
+    public ArrayList<String[]> listarMatriculas() {
+    ArrayList<String[]> lista = new ArrayList<>();
+    String sql = "SELECT * FROM matriculas";
+    try {
+        Conexao conexao = new Conexao();
+        Connection con = conexao.getConexao();
+        PreparedStatement stmt = con.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+        
+        while (rs.next()) {
+            String[] linha = new String[6];
+            linha[0] = String.valueOf(rs.getInt("matriculas_id"));
+            linha[1] = rs.getString("data_inicio");
+            linha[2] = rs.getString("data_fim");
+            linha[3] = String.valueOf(rs.getInt("qtd_tempo"));
+            linha[4] = String.valueOf(rs.getInt("fk_instituicao_id"));
+            linha[5] = String.valueOf(rs.getInt("fk_aluno_id"));
+            lista.add(linha);
+        }
+    } catch (SQLException e) {
+        System.out.println("Erro ao listar matrículas: " + e.getMessage());
     }
-    
+    return lista;
+}
+
 }

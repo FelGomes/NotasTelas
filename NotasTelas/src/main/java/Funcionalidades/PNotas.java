@@ -192,6 +192,7 @@ public class PNotas {
         return false;
     }
     
+
     public List<Object[]> buscarNotasPorDisciplina(String disciplina) {
         List<Object[]> lista = new ArrayList<>();
         String sql = """
@@ -240,6 +241,7 @@ public class PNotas {
 
         return lista;
     }
+
 
     
     
