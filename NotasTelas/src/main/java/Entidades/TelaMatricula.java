@@ -172,9 +172,27 @@ public class TelaMatricula {
         janela.dispose();
     });
 
-    botaoGerarArquivo.addActionListener(e -> {
-        JOptionPane.showMessageDialog(null, "Função de gerar arquivo ainda não implementada.");
-    });
+   botaoGerarArquivo.addActionListener(e -> {
+    try {
+        ArrayList<String[]> lista = pMatricula.listarMatriculas();
+        String caminho = "/home/felipe/Documentos/GitHub/NotasTelas/Matriculas.txt";
+
+        java.io.FileWriter writer = new java.io.FileWriter(caminho);
+
+        // Cabeçalho
+        writer.write("ID\tData Início\tData Fim\tQtd Tempo\tID Instituição\tID Aluno\n");
+
+        // Conteúdo
+        for (String[] matricula : lista) {
+            writer.write(String.join("\t", matricula) + "\n");
+        }
+
+        writer.close();
+        JOptionPane.showMessageDialog(null, "Arquivo gerado com sucesso!");
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(null, "Erro ao gerar arquivo: " + ex.getMessage());
+    }
+});
 
     janela.setVisible(true);
 }

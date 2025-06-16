@@ -88,4 +88,22 @@ public class PDiario {
         }
         return lista;
     }
+    // Novo método: usado pelo botão Gerar Arquivo
+    // fazendo separado para previnir um cast forçado e pode dar problema em tempo de execução (ClassCastException) se usado errado.
+    public ArrayList<String[]> listarDiarios() {
+        ArrayList<String[]> listaString = new ArrayList<>();
+        ArrayList<EDiario> listaObjetos = listar(""); // usa o método já existente
+
+        for (EDiario diario : listaObjetos) {
+            String[] linha = new String[6];
+            linha[0] = String.valueOf(diario.getDiarios_id());
+            linha[1] = diario.getDiarios_local();
+            linha[2] = diario.getDiarios_disciplinas();
+            linha[3] = String.valueOf(diario.getQtd_alunos());
+            linha[4] = String.valueOf(diario.getFk_diarios_professores_());
+            linha[5] = String.valueOf(diario.getFk_diarios_alunos_());
+            listaString.add(linha);
+        }
+        return listaString;
+    }
 }
