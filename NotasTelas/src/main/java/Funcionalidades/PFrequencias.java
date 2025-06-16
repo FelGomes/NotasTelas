@@ -68,10 +68,8 @@ public class PFrequencias {
 
     // Incluir frequência
     public String incluirFrequencia(EFrequencias freq) {
-        String sql = "INSERT INTO frequencias (total_aulas, aulas_ministradas, frequencias_faltas, prctg_presenca, " +
-                     "frequencias_disciplinas, fk_frequencias_professores_id, fk_frequencias_alunos_id) " +
-                     "VALUES (?, ?, ?, ?, UPPER(?), ?, ?)";
-
+        String sql = "INSERT INTO frequencias (total_aulas, aulas_ministradas, frequencias_faltas, prctg_presenca, frequencias_disciplinas,fk_frequencias_professores_id, fk_frequencias_alunos_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        
         try (Connection conexao = new Conexao().getConexao();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
