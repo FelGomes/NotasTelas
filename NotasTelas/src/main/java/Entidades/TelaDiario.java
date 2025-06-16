@@ -107,59 +107,24 @@ public class TelaDiario {
         final int[] idSelecionado = {-1};
 
         tabela.addMouseListener(new MouseAdapter() {
-            @Override 
+            @Override
             public void mouseClicked(MouseEvent e) {
                 int linha = tabela.getSelectedRow();
-                // Verifica se uma linha válida foi realmente selecionada
-                if (linha == -1) {
-                    // Clicou fora de uma linha ou tabela vazia
-                    idSelecionado[0] = -1;
-                    limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
-                    botaoAlterar.setEnabled(false);
-                    botaoExcluir.setEnabled(false);
-                    return; // Sai do método pois nada foi selecionado
-                }
-
-                try {
-                    idSelecionado[0] = Integer.parseInt(tabela.getValueAt(linha, 0).toString());
-                    campoLocal.setText(tabela.getValueAt(linha, 1).toString());
-                    campoDisciplinas.setText(tabela.getValueAt(linha, 2).toString());
-                    campoQtdAlunos.setText(tabela.getValueAt(linha, 3).toString());
-                    campoFkProfessor.setText(tabela.getValueAt(linha, 4).toString());
-                    campoFkAluno.setText(tabela.getValueAt(linha, 5).toString());
-
-                    // Se tudo acima funcionar, habilita os botões
-                    botaoAlterar.setEnabled(true);
-                    botaoExcluir.setEnabled(true);
-                    System.out.println("Botões Alterar e Excluir habilitados para ID: " + idSelecionado[0]); // Mensagem para debug
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Erro de formato numérico na tabela. Verifique os dados: " + ex.getMessage(), "Erro de Dados", JOptionPane.ERROR_MESSAGE);
-                    // Desabilita os botões se houver erro
-                    botaoAlterar.setEnabled(false);
-                    botaoExcluir.setEnabled(false);
-                    limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
-                    idSelecionado[0] = -1;
-                } catch (NullPointerException ex) {
-                    JOptionPane.showMessageDialog(null, "Erro: Valor nulo encontrado em uma célula da tabela: " + ex.getMessage(), "Erro de Dados", JOptionPane.ERROR_MESSAGE);
-                     // Desabilita os botões se houver erro
-                    botaoAlterar.setEnabled(false);
-                    botaoExcluir.setEnabled(false);
-                    limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
-                    idSelecionado[0] = -1;
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado ao selecionar o diário: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-                     // Desabilita os botões se houver erro
-                    botaoAlterar.setEnabled(false);
-                    botaoExcluir.setEnabled(false);
-                    limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
-                    idSelecionado[0] = -1;
-                }
+                idSelecionado[0] = Integer.parseInt(tabela.getValueAt(linha, 0).toString());
+                campoLocal.setText(tabela.getValueAt(linha, 1).toString());
+                campoDisciplinas.setText(tabela.getValueAt(linha, 2).toString());
+                campoQtdAlunos.setText(tabela.getValueAt(linha, 3).toString());
+                campoFkProfessor.setText(tabela.getValueAt(linha, 4).toString());
+                campoFkAluno.setText(tabela.getValueAt(linha, 5).toString());
+                botaoAlterar.setEnabled(true);
+                botaoExcluir.setEnabled(true);
+                
             }
         });
-
         botaoSalvar.addActionListener(e -> {
             if (validarCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno)) {
                 EDiario d = new EDiario();
+                //abreviar para deixar o código menor para a leitura
                 d.setDiarios_local(campoLocal.getText());
                 d.setDiarios_disciplinas(campoDisciplinas.getText());
                 d.setQtd_alunos(Integer.parseInt(campoQtdAlunos.getText()));
@@ -169,20 +134,16 @@ public class TelaDiario {
                 JOptionPane.showMessageDialog(null, resultado);
                 atualizarTabela(tabela, pDiario.listar(""));
                 limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
-                // Após salvar, não há seleção, então desabilitar os botões de ação
-                botaoAlterar.setEnabled(false);
-                botaoExcluir.setEnabled(false);
-                idSelecionado[0] = -1;
+               
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos.");
             }
         });
-
         botaoAlterar.addActionListener(e -> {
             if (idSelecionado[0] != -1 && validarCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno)) {
                 EDiario d = new EDiario();
                 d.setDiarios_id(idSelecionado[0]);
-                System.out.println("ID Selecionado para Alterar: " + idSelecionado[0]);
+                System.out.println("ID Selecionado: " + idSelecionado[0]);
                 d.setDiarios_local(campoLocal.getText());
                 d.setDiarios_disciplinas(campoDisciplinas.getText());
                 d.setQtd_alunos(Integer.parseInt(campoQtdAlunos.getText()));
@@ -193,21 +154,19 @@ public class TelaDiario {
                 atualizarTabela(tabela, pDiario.listar(""));
                 limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
                 idSelecionado[0] = -1; // Resetar seleção
-                botaoAlterar.setEnabled(false); // Desabilitar após a alteração
-                botaoExcluir.setEnabled(false); // Desabilitar após a alteração
+                
             } else if (idSelecionado[0] == -1) {
                 JOptionPane.showMessageDialog(null, "Selecione um diário para alterar.");
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos.");
             }
         });
-
         botaoExcluir.addActionListener(e -> {
             if (idSelecionado[0] != -1) {
                 int confirmacao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir este diário?", "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
                 if (confirmacao == JOptionPane.YES_OPTION) {
                     String resultado = pDiario.deletar(idSelecionado[0]);
-                    System.out.println("ID Selecionado para Excluir: " + idSelecionado[0]);
+                    System.out.println("ID Selecionado: " + idSelecionado[0]);
                     JOptionPane.showMessageDialog(null, resultado);
                     atualizarTabela(tabela, pDiario.listar(""));
                     limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
@@ -222,11 +181,6 @@ public class TelaDiario {
 
         botaoFiltrar.addActionListener(e -> {
             atualizarTabela(tabela, pDiario.listar(campoFiltro.getText()));
-            // Após filtrar, a seleção pode ser perdida, então é bom desabilitar
-            botaoAlterar.setEnabled(false);
-            botaoExcluir.setEnabled(false);
-            limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
-            idSelecionado[0] = -1;
         });
 
         botaoCancelar.addActionListener(e -> {
