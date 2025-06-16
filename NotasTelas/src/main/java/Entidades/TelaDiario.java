@@ -142,6 +142,7 @@ public class TelaDiario {
             if (idSelecionado[0] != -1 && validarCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno)) {
                 EDiario d = new EDiario();
                 d.setDiarios_id(idSelecionado[0]);
+                System.out.println("ID Selecionado: " + idSelecionado[0]);
                 d.setDiarios_local(campoLocal.getText());
                 d.setDiarios_disciplinas(campoDisciplinas.getText());
                 d.setQtd_alunos(Integer.parseInt(campoQtdAlunos.getText()));
@@ -165,6 +166,7 @@ public class TelaDiario {
                 int confirmacao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir este diário?", "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
                 if (confirmacao == JOptionPane.YES_OPTION) {
                     String resultado = pDiario.deletar(idSelecionado[0]);
+                    System.out.println("ID Selecionado: " + idSelecionado[0]);
                     JOptionPane.showMessageDialog(null, resultado);
                     atualizarTabela(tabela, pDiario.listar(""));
                     limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
