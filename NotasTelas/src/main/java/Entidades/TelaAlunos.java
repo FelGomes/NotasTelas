@@ -97,8 +97,8 @@ public class TelaAlunos {
         botaoArquivo.setBounds(450, 240, 100, 25);
         janela.add(botaoArquivo);
 
-        JLabel nomeFiltro = new JLabel("FILTRO:");
-        nomeFiltro.setBounds(10, 205, 60, 25);
+        JLabel nomeFiltro = new JLabel("FILTRO SALA:");
+        nomeFiltro.setBounds(10, 205, 90, 25);
         nomeFiltro.setHorizontalAlignment(JLabel.RIGHT);
         janela.add(nomeFiltro);
 
