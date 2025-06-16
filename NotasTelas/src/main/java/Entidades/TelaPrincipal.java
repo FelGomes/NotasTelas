@@ -124,15 +124,9 @@ public class TelaPrincipal {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                try {
-                    jFrameInicial.dispose();
-                    TelaFrequencias.MontarTelaFrequencia();
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    System.out.println(e1.getMessage());
-                } catch (SQLException ex) {
-                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                jFrameInicial.dispose(); // TODO Auto-generated catch block
+                TelaFrequencias.montarTelaFrequencia();
+                
 
             }
         });
@@ -142,15 +136,9 @@ public class TelaPrincipal {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                try {
-                    jFrameInicial.dispose();
-                    TelaDiario.montarTelaDiario();
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    System.out.println(e1.getMessage());
-                } catch (SQLException ex) {
-                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                jFrameInicial.dispose(); // TODO Auto-generated catch block
+                TelaDiario.montarTelaDiario();
+                
 
             }
         });

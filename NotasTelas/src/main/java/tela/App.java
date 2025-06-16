@@ -23,10 +23,10 @@ public class App {
        //TelaNotas.montarTelaNotas(); -> fazer o campo filtro e arrumar para o nome do aluno aparecer, 
       
        //TelaNotas.montarTelaNotas(); -> certo
-       TelaDiario.montarTelaDiario();
+       //TelaDiario.montarTelaDiario();
        //TelaProfessores.montarTelaProfessor(); certo
        //TelaNotas.montarTelaNotas();
-       TelaFrequencias.montarTelaFrequencia();
+       //TelaFrequencias.montarTelaFrequencia();
        //TelaFrequencias.montarTelaFrequencia();
        TelaPrincipal.montarTelaInicial();
 
