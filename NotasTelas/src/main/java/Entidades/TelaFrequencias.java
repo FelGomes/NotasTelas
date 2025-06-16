@@ -70,6 +70,14 @@ public class TelaFrequencias {
         JButton botaoSalvar = new JButton("SALVAR");
         botaoSalvar.setBounds(180, 210, 100, 30);
         janela.add(botaoSalvar);
+        
+        JButton botaoAlterar = new JButton("ALTERAR");
+        botaoAlterar.setBounds(140, 210, 100, 30);
+        janela.add(botaoAlterar);
+        
+        JButton botaoExcluir = new JButton("EXCLUIR");
+        botaoExcluir.setBounds(250, 210, 100, 30);
+        janela.add(botaoExcluir);
 
         JButton botaoGerarArquivo = new JButton("GERAR ARQUIVO");
         botaoGerarArquivo.setBounds(300, 210, 150, 30);

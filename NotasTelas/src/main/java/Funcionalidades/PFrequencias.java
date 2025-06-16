@@ -117,45 +117,35 @@ public String gerarArquivoFrequencias(List<EFrequencias> lista) {
         }
     }
 
-    // Alterar frequência
     public String alterarFrequencia(EFrequencias freq) {
-        String sql = "UPDATE frequencias SET total_aulas = ?, aulas_ministradas = ?, frequencias_faltas = ?, "
-                + "prctg_presenca = ?, frequencias_disciplinas = ?, fk_frequencias_professores_id = ?, "
-                + "fk_frequencias_alunos_id = ? WHERE frequencias_id = ?";
+        String sql = "UPDATE frequencias SET total_aulas = ?, aulas_ministradas = ?, frequencias_faltas = ?, frequencias_disciplinas = ?, fk_professores_id = ?, fk_alunos_id = ? WHERE frequencias_id = ?";
         try {
-            Conexao conexao = new Conexao();
-            Connection con = conexao.getConexao();
+            Connection con = new Conexao().getConexao();
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, freq.getTotal_aulas());
             stmt.setInt(2, freq.getAulas_ministradas());
             stmt.setInt(3, freq.getFrequencias_faltas());
-            stmt.setFloat(4, freq.getPrctg_presenca());
-            stmt.setString(5, freq.getFrequencias_disciplinas());
-            stmt.setInt(6, freq.getProfessores().getIdProfessor());
-            stmt.setInt(7, freq.getAluno().getUsuario_id()); // Corrigido
-            stmt.setInt(8, freq.getFrequencias_id());
+            stmt.setString(4, freq.getFrequencias_disciplinas());
+            stmt.setInt(5, freq.getProfessores().getIdProfessor());
+            stmt.setInt(6, freq.getAluno().getUsuario_id());
+            stmt.setInt(7, freq.getFrequencias_id());
             stmt.executeUpdate();
-            return "Alteração efetuada com sucesso!";
+            return "Frequência alterada com sucesso!";
         } catch (SQLException e) {
-            return "Erro na alteração: " + e.getMessage();
+            return "Erro ao alterar frequência: " + e.getMessage();
         }
     }
 
-    // Excluir frequência
-    public String excluirFrequencia(int id) {
+    public String excluirFrequencia(int idFrequencia) {
         String sql = "DELETE FROM frequencias WHERE frequencias_id = ?";
-
         try {
-            Conexao conexao = new Conexao();
-            Connection con = conexao.getConexao();
+            Connection con = new Conexao().getConexao();
             PreparedStatement stmt = con.prepareStatement(sql);
-
-            stmt.setInt(1, id);
+            stmt.setInt(1, idFrequencia);
             stmt.executeUpdate();
-            return "Exclusão efetuada com sucesso!";
-
+            return "Frequência excluída com sucesso!";
         } catch (SQLException e) {
-            return "Erro na exclusão: " + e.getMessage();
+            return "Erro ao excluir frequência: " + e.getMessage();
         }
     }
 }
