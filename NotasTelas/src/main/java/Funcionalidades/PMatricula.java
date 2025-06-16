@@ -88,4 +88,29 @@ public class PMatricula {
         }
         return lista;
     }   
+    public ArrayList<String[]> listarMatriculas() {
+    ArrayList<String[]> lista = new ArrayList<>();
+    String sql = "SELECT * FROM matriculas";
+    try {
+        Conexao conexao = new Conexao();
+        Connection con = conexao.getConexao();
+        PreparedStatement stmt = con.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+        
+        while (rs.next()) {
+            String[] linha = new String[6];
+            linha[0] = String.valueOf(rs.getInt("matriculas_id"));
+            linha[1] = rs.getString("data_inicio");
+            linha[2] = rs.getString("data_fim");
+            linha[3] = String.valueOf(rs.getInt("qtd_tempo"));
+            linha[4] = String.valueOf(rs.getInt("fk_instituicao_id"));
+            linha[5] = String.valueOf(rs.getInt("fk_aluno_id"));
+            lista.add(linha);
+        }
+    } catch (SQLException e) {
+        System.out.println("Erro ao listar matrículas: " + e.getMessage());
+    }
+    return lista;
+}
+
 }

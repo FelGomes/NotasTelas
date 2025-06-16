@@ -142,6 +142,7 @@ public class TelaDiario {
             if (idSelecionado[0] != -1 && validarCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno)) {
                 EDiario d = new EDiario();
                 d.setDiarios_id(idSelecionado[0]);
+                System.out.println("ID Selecionado: " + idSelecionado[0]);
                 d.setDiarios_local(campoLocal.getText());
                 d.setDiarios_disciplinas(campoDisciplinas.getText());
                 d.setQtd_alunos(Integer.parseInt(campoQtdAlunos.getText()));
@@ -165,6 +166,7 @@ public class TelaDiario {
                 int confirmacao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir este diário?", "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
                 if (confirmacao == JOptionPane.YES_OPTION) {
                     String resultado = pDiario.deletar(idSelecionado[0]);
+                    System.out.println("ID Selecionado: " + idSelecionado[0]);
                     JOptionPane.showMessageDialog(null, resultado);
                     atualizarTabela(tabela, pDiario.listar(""));
                     limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
@@ -191,8 +193,26 @@ public class TelaDiario {
             atualizarTabela(tabela, pDiario.listar("")); // Recarrega a tabela completa
         });
         botaoGerarArquivo.addActionListener(e -> {
-            JOptionPane.showMessageDialog(null, "Função de gerar arquivo ainda não implementada para Diário.");
-        });
+    try {
+        ArrayList<String[]> lista = pDiario.listarDiarios();
+        String caminho = "/home/felipe/Documentos/GitHub/NotasTelas/Diarios.txt";
+
+        java.io.FileWriter writer = new java.io.FileWriter(caminho);
+
+        // Cabeçalho
+        writer.write("ID\tLocal\tDisciplinas\tQtd_Alunos\tFk_Professor\tFk_Aluno\n");
+
+        // Conteúdo
+        for (String[] diario : lista) {
+            writer.write(String.join("\t", diario) + "\n");
+        }
+
+        writer.close();
+        JOptionPane.showMessageDialog(null, "Arquivo de Diarios gerado com sucesso!");
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(null, "Erro ao gerar o arquivo: " + ex.getMessage());
+    }
+});
 
         janela.setVisible(true);
      }
@@ -204,6 +224,8 @@ public class TelaDiario {
         }
         return true;
     }
+
+            
 
     private static void limparCampos(JTextField... campos) {
         for (JTextField campo : campos) {

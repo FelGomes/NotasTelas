@@ -205,6 +205,33 @@ public class Usuarios {
                 ex.printStackTrace();
             }
         });
+        
+        botaoArquivo.addActionListener(e -> {
+            try {
+                ArrayList<String[]> lista = pUsuarios.listarUsuarios();
+                String caminho = "/home/felipe/Documentos/GitHub/NotasTelas/Usuarios.txt"; 
+
+                java.io.FileWriter writer = new java.io.FileWriter(caminho);
+
+                // Cabeçalho
+                writer.write("ID\tNome\tSexo\tCPF\tEndereco\tNascimento\n");
+
+                // Conteúdo
+                for (String[] usuario : lista) {
+                    writer.write(String.join("\t", usuario) + "\n");
+                }
+
+                writer.close();
+
+                JOptionPane.showMessageDialog(null, "Arquivo gerado com sucesso em:\n" + caminho);
+            } catch (IOException | SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Erro ao gerar o arquivo: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        
+        
 
         botaoCancelar.addActionListener(e -> {
             try {
