@@ -71,6 +71,22 @@ public class TelaFrequencias {
         botaoSalvar.setBounds(180, 210, 100, 30);
         janela.add(botaoSalvar);
 
+        JButton botaoGerarArquivo = new JButton("GERAR ARQUIVO");
+        botaoGerarArquivo.setBounds(300, 210, 150, 30);
+        janela.add(botaoGerarArquivo);
+
+        botaoGerarArquivo.addActionListener(e -> {
+            try {
+                PFrequencias pFrequencias = new PFrequencias();
+                List<EFrequencias> lista = pFrequencias.listarFrequencias();
+                String resultado = pFrequencias.gerarArquivoFrequencias(lista);
+                JOptionPane.showMessageDialog(null, resultado);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Erro ao gerar arquivo: " + ex.getMessage());
+            }
+        });
+
         JTable tabela = new JTable();
         JScrollPane scroll = new JScrollPane(tabela);
         scroll.setBounds(30, 260, 520, 180);
@@ -113,13 +129,13 @@ public class TelaFrequencias {
 
         for (EFrequencias f : lista) {
             modelo.addRow(new Object[]{
-                    f.getFrequencias_id(),
-                    f.getTotal_aulas(),
-                    f.getAulas_ministradas(),
-                    f.getFrequencias_faltas(),
-                    f.getFrequencias_disciplinas(),
-                    f.getProfessores() != null ? f.getProfessores().getIdProfessor() : null,
-                    f.getAluno() != null ? f.getAluno().getUsuario_id() : null
+                f.getFrequencias_id(),
+                f.getTotal_aulas(),
+                f.getAulas_ministradas(),
+                f.getFrequencias_faltas(),
+                f.getFrequencias_disciplinas(),
+                f.getProfessores() != null ? f.getProfessores().getIdProfessor() : null,
+                f.getAluno() != null ? f.getAluno().getUsuario_id() : null
             });
         }
 

@@ -6,11 +6,37 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import conexao.Conexao;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
 import Funcionalidades.EFrequencias;
 import Funcionalidades.EProfessor;
 import Funcionalidades.EAlunos;
 
 public class PFrequencias {
+
+public String gerarArquivoFrequencias(List<EFrequencias> lista) {
+    String nomeArquivo = "frequencias_exportadas.csv";
+    try (FileWriter writer = new FileWriter(nomeArquivo)) {
+        writer.write("ID;Total Aulas;Aulas Ministradas;Faltas;% Presença;Disciplina;ID Professor;ID Aluno\n");
+        for (EFrequencias f : lista) {
+            writer.write(
+                f.getFrequencias_id() + ";" +
+                f.getTotal_aulas() + ";" +
+                f.getAulas_ministradas() + ";" +
+                f.getFrequencias_faltas() + ";" +
+                f.getPrctg_presenca() + ";" +
+                f.getFrequencias_disciplinas() + ";" +
+                (f.getProfessores() != null ? f.getProfessores().getIdProfessor() : "") + ";" +
+                (f.getAluno() != null ? f.getAluno().getUsuario_id() : "") + "\n"
+            );
+        }
+        return "Arquivo gerado com sucesso: " + nomeArquivo;
+    } catch (IOException e) {
+        return "Erro ao gerar arquivo: " + e.getMessage();
+    }
+}
+
 
     // Listar todas as frequências
     public ArrayList<EFrequencias> listarFrequencias() {
