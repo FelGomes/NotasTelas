@@ -131,8 +131,7 @@ public class TelaDiario {
                 JOptionPane.showMessageDialog(null, resultado);
                 atualizarTabela(tabela, pDiario.listar(""));
                 limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
-                botaoAlterar.setEnabled(false);
-                botaoExcluir.setEnabled(false);
+               
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos.");
             }
@@ -152,8 +151,7 @@ public class TelaDiario {
                 atualizarTabela(tabela, pDiario.listar(""));
                 limparCampos(campoLocal, campoDisciplinas, campoQtdAlunos, campoFkProfessor, campoFkAluno);
                 idSelecionado[0] = -1; // Resetar seleção
-                botaoAlterar.setEnabled(false);
-                botaoExcluir.setEnabled(false);
+                
             } else if (idSelecionado[0] == -1) {
                 JOptionPane.showMessageDialog(null, "Selecione um diário para alterar.");
             } else {
