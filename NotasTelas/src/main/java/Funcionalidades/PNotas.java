@@ -192,6 +192,57 @@ public class PNotas {
         return false;
     }
     
+
+    public List<Object[]> buscarNotasPorDisciplina(String disciplina) {
+        List<Object[]> lista = new ArrayList<>();
+        String sql = """
+        SELECT 
+            a.alunos_id AS idAluno,
+            ua.usuarios_nome AS nomeAluno,
+            p.professores_id AS idProfessor,
+            up.usuarios_nome AS nomeProfessor,
+            n.nota_um,
+            n.nota_dois,
+            n.nota_tres,
+            n.nota_quatro,
+            n.nota_media,
+            p.professores_disciplina AS disciplina
+        FROM notas n
+        JOIN alunos a ON n.fk_notas_alunos_id = a.alunos_id
+        JOIN usuarios ua ON a.fk_alunos_usuarios_id = ua.usuarios_id
+        JOIN professores p ON n.fk_notas_professores_id = p.professores_id
+        JOIN usuarios up ON p.fk_professores_usuarios_id = up.usuarios_id
+        WHERE p.professores_disciplina LIKE ?
+    """;
+
+        try (Connection conexao = new Conexao().getConexao(); PreparedStatement stmt = conexao.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + disciplina + "%"); // busca parcial (LIKE)
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(new Object[]{
+                        rs.getInt("idAluno"),
+                        rs.getString("nomeAluno"),
+                        rs.getInt("idProfessor"),
+                        rs.getString("nomeProfessor"),
+                        rs.getDouble("nota_um"),
+                        rs.getDouble("nota_dois"),
+                        rs.getDouble("nota_tres"),
+                        rs.getDouble("nota_quatro"),
+                        rs.getDouble("nota_media"),
+                        rs.getString("disciplina")
+                    });
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+
+
     
     
     public void gerarArquivoNotas() throws IOException {
