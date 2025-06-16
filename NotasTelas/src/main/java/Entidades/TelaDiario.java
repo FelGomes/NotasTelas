@@ -115,6 +115,8 @@ public class TelaDiario {
                 campoQtdAlunos.setText(tabela.getValueAt(linha, 3).toString());
                 campoFkProfessor.setText(tabela.getValueAt(linha, 4).toString());
                 campoFkAluno.setText(tabela.getValueAt(linha, 5).toString());
+                botaoAlterar.setEnabled(true);
+                botaoExcluir.setEnabled(true);
                 
             }
         });
