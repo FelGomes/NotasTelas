@@ -1,113 +1,140 @@
 package Entidades;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
+
 import Funcionalidades.EFrequencias;
+import Funcionalidades.PFrequencias;
+
+import java.util.ArrayList;
 
 public class TelaFrequencias {
 
-    public static void MontarTelaFrequencia() throws IOException {
+    public static void montarTelaFrequencia() throws IOException {
         JFrame janela = new JFrame("FREQUÊNCIA");
-        janela.setSize(600, 600);
+        janela.setSize(700, 550);
         janela.setLayout(null);
-        janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Evita fechar o app inteiro
 
         // Rótulos
-        JLabel rotuloFrequenciasId = new JLabel("ID FREQUÊNCIA:");
-        rotuloFrequenciasId.setBounds(30, 20, 120, 20);
-        janela.add(rotuloFrequenciasId);
-
-        JLabel rotuloTotalAulas = new JLabel("TOTAL DE AULAS:");
-        rotuloTotalAulas.setBounds(30, 50, 120, 20);
+        JLabel rotuloTotalAulas = new JLabel("Total de Aulas:");
+        rotuloTotalAulas.setBounds(30, 20, 120, 20);
         janela.add(rotuloTotalAulas);
 
-        JLabel rotuloAulasMinistradas = new JLabel("AULAS MINISTRADAS:");
-        rotuloAulasMinistradas.setBounds(30, 80, 150, 20);
+        JLabel rotuloAulasMinistradas = new JLabel("Aulas Ministradas:");
+        rotuloAulasMinistradas.setBounds(30, 50, 150, 20);
         janela.add(rotuloAulasMinistradas);
 
-        JLabel rotuloFrequenciasFaltas = new JLabel("FALTAS:");
-        rotuloFrequenciasFaltas.setBounds(30, 110, 120, 20);
-        janela.add(rotuloFrequenciasFaltas);
+        JLabel rotuloFaltas = new JLabel("Faltas:");
+        rotuloFaltas.setBounds(30, 80, 120, 20);
+        janela.add(rotuloFaltas);
 
-        JLabel rotuloFrequenciasDisciplinas = new JLabel("DISCIPLINA:");
-        rotuloFrequenciasDisciplinas.setBounds(30, 140, 120, 20);
-        janela.add(rotuloFrequenciasDisciplinas);
+        JLabel rotuloDisciplina = new JLabel("Disciplina:");
+        rotuloDisciplina.setBounds(30, 110, 120, 20);
+        janela.add(rotuloDisciplina);
 
         // Campos
-        JTextField campoFrequenciasId = new JTextField();
-        campoFrequenciasId.setBounds(180, 20, 200, 20);
-        janela.add(campoFrequenciasId);
-
         JTextField campoTotalAulas = new JTextField();
-        campoTotalAulas.setBounds(180, 50, 200, 20);
+        campoTotalAulas.setBounds(180, 20, 200, 20);
         janela.add(campoTotalAulas);
 
         JTextField campoAulasMinistradas = new JTextField();
-        campoAulasMinistradas.setBounds(180, 80, 200, 20);
+        campoAulasMinistradas.setBounds(180, 50, 200, 20);
         janela.add(campoAulasMinistradas);
 
-        JTextField campoFrequenciasFaltas = new JTextField();
-        campoFrequenciasFaltas.setBounds(180, 110, 200, 20);
-        janela.add(campoFrequenciasFaltas);
+        JTextField campoFaltas = new JTextField();
+        campoFaltas.setBounds(180, 80, 200, 20);
+        janela.add(campoFaltas);
 
-        JTextField campoFrequenciasDisciplinas = new JTextField();
-        campoFrequenciasDisciplinas.setBounds(180, 140, 200, 20);
-        janela.add(campoFrequenciasDisciplinas);
+        JTextField campoDisciplina = new JTextField();
+        campoDisciplina.setBounds(180, 110, 200, 20);
+        janela.add(campoDisciplina);
 
         // Botões
         JButton botaoSalvar = new JButton("SALVAR");
-        botaoSalvar.setBounds(400, 20, 120, 30);
+        botaoSalvar.setBounds(400, 20, 100, 25);
         janela.add(botaoSalvar);
 
-        JButton botaoAlterar = new JButton("ALTERAR");
-        botaoAlterar.setBounds(400, 60, 120, 30);
-        janela.add(botaoAlterar);
-
-        JButton botaoExcluir = new JButton("EXCLUIR");
-        botaoExcluir.setBounds(400, 100, 120, 30);
-        janela.add(botaoExcluir);
-
         JButton botaoListar = new JButton("LISTAR");
-        botaoListar.setBounds(400, 140, 120, 30);
+        botaoListar.setBounds(400, 60, 100, 25);
         janela.add(botaoListar);
 
-        JButton botaoCancelar = new JButton("CANCELAR");
-        botaoCancelar.setBounds(400, 180, 120, 30);
-        janela.add(botaoCancelar);
+        JButton botaoLimpar = new JButton("LIMPAR");
+        botaoLimpar.setBounds(400, 100, 100, 25);
+        janela.add(botaoLimpar);
 
         // Tabela
-        String[] colunas = {"ID", "Total Aulas", "Ministradas", "Faltas", "Disciplina"};
-        String[][] dados = new String[0][5]; // Inicialmente vazio
-        JTable tabela = new JTable(dados, colunas);
+        JTable tabela = new JTable();
         JScrollPane scroll = new JScrollPane(tabela);
-        scroll.setBounds(30, 250, 520, 250);
+        scroll.setBounds(30, 160, 620, 300);
         janela.add(scroll);
 
-        // Instância da entidade
-        EFrequencias frequencias = new EFrequencias();
+        PFrequencias pFrequencias = new PFrequencias();
+        atualizarTabela(tabela, pFrequencias.listarFrequencias());
 
-        // Evento SALVAR
-        botaoSalvar.addActionListener(e -> {
-            try {
-                frequencias.setFrequencias_id(Integer.parseInt(campoFrequenciasId.getText()));
-                frequencias.setTotal_aulas(Integer.parseInt(campoTotalAulas.getText()));
-                frequencias.setAulas_ministradas(Integer.parseInt(campoAulasMinistradas.getText()));
-                frequencias.setFrequencias_faltas(Integer.parseInt(campoFrequenciasFaltas.getText()));
-                frequencias.setFrequencias_disciplinas(campoFrequenciasDisciplinas.getText());
+        botaoSalvar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (validarCampos(campoTotalAulas, campoAulasMinistradas, campoFaltas, campoDisciplina)) {
+                    EFrequencias freq = new EFrequencias();
+                    freq.setTotal_aulas(Integer.parseInt(campoTotalAulas.getText()));
+                    freq.setAulas_ministradas(Integer.parseInt(campoAulasMinistradas.getText()));
+                    freq.setFrequencias_faltas(Integer.parseInt(campoFaltas.getText()));
+                    freq.setFrequencias_disciplinas(campoDisciplina.getText());
 
-                float presenca = ((float) (frequencias.getAulas_ministradas() - frequencias.getFrequencias_faltas()) / frequencias.getAulas_ministradas()) * 100;
-                frequencias.setPrctg_presenca(presenca);
-
-                JOptionPane.showMessageDialog(null, "Frequência salva com sucesso!\nPresença: " + presenca + "%");
-
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "Erro: Verifique os campos numéricos.");
-            } catch (ArithmeticException ex) {
-                JOptionPane.showMessageDialog(null, "Erro de cálculo: Divisão por zero.");
+                    String resultado = pFrequencias.incluirFrequencia(freq);
+                    JOptionPane.showMessageDialog(null, resultado);
+                    atualizarTabela(tabela, pFrequencias.listarFrequencias());
+                    limparCampos(campoTotalAulas, campoAulasMinistradas, campoFaltas, campoDisciplina);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Preencha todos os campos corretamente.");
+                }
             }
         });
 
-        // Mostrar a janela
+        botaoListar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                atualizarTabela(tabela, pFrequencias.listarFrequencias());
+            }
+        });
+
+        botaoLimpar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                limparCampos(campoTotalAulas, campoAulasMinistradas, campoFaltas, campoDisciplina);
+            }
+        });
+
         janela.setVisible(true);
+    }
+
+    private static boolean validarCampos(JTextField... campos) {
+        for (JTextField campo : campos) {
+            if (campo.getText().trim().isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static void limparCampos(JTextField... campos) {
+        for (JTextField campo : campos) {
+            campo.setText("");
+        }
+    }
+
+    private static void atualizarTabela(JTable tabela, ArrayList<EFrequencias> lista) {
+        String[] colunas = {"ID", "Total Aulas", "Aulas Ministradas", "Faltas", "Disciplina"};
+        String[][] dados = new String[lista.size()][5];
+
+        for (int i = 0; i < lista.size(); i++) {
+            EFrequencias f = lista.get(i);
+            dados[i][0] = String.valueOf(f.getFrequencias_id());
+            dados[i][1] = String.valueOf(f.getTotal_aulas());
+            dados[i][2] = String.valueOf(f.getAulas_ministradas());
+            dados[i][3] = String.valueOf(f.getFrequencias_faltas());
+            dados[i][4] = f.getFrequencias_disciplinas();
+        }
+        tabela.setModel(new javax.swing.table.DefaultTableModel(dados, colunas));
     }
 }
