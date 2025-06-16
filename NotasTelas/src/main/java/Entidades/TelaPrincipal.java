@@ -92,6 +92,88 @@ public class TelaPrincipal {
         buttonProf.add(labelProf);
         jFrameInicial.add(buttonProf);
         
+        JLabel labelMatr = new JLabel("Matricula");
+        labelMatr.setBounds(20, 20, 100, 100);
+        labelMatr.setHorizontalAlignment(JLabel.CENTER);
+        
+        JButton buttonMatr = new JButton();
+        buttonMatr.setBounds(450, 275, 100, 50);
+        buttonMatr.add(labelMatr);
+        jFrameInicial.add(buttonMatr);
+        
+        JLabel labelDia = new JLabel("Diário");
+        labelDia.setBounds(20, 20, 100, 100);
+        labelDia.setHorizontalAlignment(JLabel.CENTER);
+        
+        JButton buttonDia = new JButton();
+        buttonDia.setBounds(575, 275, 100, 50);
+        buttonDia.add(labelDia);
+        jFrameInicial.add(buttonDia);
+        
+        JLabel labelFreq = new JLabel("Frequencia");
+        labelFreq.setBounds(20, 20, 100, 100);
+        labelFreq.setHorizontalAlignment(JLabel.CENTER);
+        
+        JButton buttonFreq = new JButton();
+        buttonFreq.setBounds(450, 175, 100, 50);
+        buttonFreq.add(labelFreq);
+        jFrameInicial.add(buttonFreq);
+        
+        buttonFreq.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                try {
+                    jFrameInicial.dispose();
+                    TelaFrequencias.MontarTelaFrequencia();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    System.out.println(e1.getMessage());
+                } catch (SQLException ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        });
+        
+        buttonDia.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                try {
+                    jFrameInicial.dispose();
+                    TelaDiario.montarTelaDiario();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    System.out.println(e1.getMessage());
+                } catch (SQLException ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        });
+            
+        
+        buttonMatr.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                try {
+                    jFrameInicial.dispose();
+                    TelaMatricula.montarTelaMatricula();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    System.out.println(e1.getMessage());
+                } catch (SQLException ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        });
+        
         buttonUsuario.addMouseListener(new MouseAdapter() {
 
             @Override

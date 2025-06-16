@@ -6,6 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import conexao.Conexao;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  *
@@ -14,6 +18,30 @@ import conexao.Conexao;
 public class PAlunos {
 
     // Listar todos os alunos
+    
+    public List<Object[]> listarAlunos2() throws SQLException {
+    List<Object[]> dadosAlunos = new ArrayList<>();
+
+    String sql = "SELECT alunos_id, alunos_matriculados, alunos_sala, alunos_turma, qtd_disciplinas FROM alunos";
+
+    try (Connection conexao = new Conexao().getConexao();
+         PreparedStatement stmt = conexao.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+
+        while (rs.next()) {
+            Object[] linha = new Object[]{
+                    rs.getInt("alunos_id"),
+                    rs.getBoolean("alunos_matriculados") ? "Sim" : "Não",
+                    rs.getString("alunos_sala"),
+                    rs.getString("alunos_turma"),
+                    rs.getInt("qtd_disciplinas")
+            };
+            dadosAlunos.add(linha);
+        }
+    }
+
+    return dadosAlunos;
+}
     public ArrayList<String[]> listarAlunos() throws SQLException {
         ArrayList<String[]> dadosAlunos = new ArrayList<>();
 
@@ -35,6 +63,25 @@ public class PAlunos {
         }
 
         return dadosAlunos;
+    }
+    
+    public void gerarArquivoAlunos()  throws SQLException  {
+        List<Object[]> alunos = listarAlunos2();
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("alunos.txt"))) {
+            writer.write("==== LISTA DE Alunos ====\n\n");
+            for (Object[] aluno : alunos) {
+                writer.write("ID: " + aluno[0] + "\n");
+                writer.write("Matriculado?: " + aluno[1] + "\n");
+                writer.write("sala: " + aluno[2] + "\n");
+                writer.write("Turma: " + aluno[3] + "\n");
+                writer.write("QTD Disciplinas: " + aluno[4] + "\n");
+                writer.write("------------------------------\n");
+            }
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Buscar alunos por sala

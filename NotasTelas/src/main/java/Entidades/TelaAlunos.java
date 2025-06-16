@@ -189,6 +189,16 @@ public class TelaAlunos {
                 ex.printStackTrace();
             }
         });
+        
+        botaoArquivo.addActionListener(e -> {
+            try {
+                pAlunos.gerarArquivoAlunos();
+                JOptionPane.showMessageDialog(null, "Arquivo gerado");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Erro ao gerar arquivo");
+            }
+        });
 
         botaoCancelar.addActionListener(e -> {
             try {
