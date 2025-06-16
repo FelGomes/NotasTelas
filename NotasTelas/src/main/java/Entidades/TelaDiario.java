@@ -107,6 +107,7 @@ public class TelaDiario {
         final int[] idSelecionado = {-1};
 
         tabela.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent e) {
                 int linha = tabela.getSelectedRow();
                 idSelecionado[0] = Integer.parseInt(tabela.getValueAt(linha, 0).toString());
@@ -115,6 +116,8 @@ public class TelaDiario {
                 campoQtdAlunos.setText(tabela.getValueAt(linha, 3).toString());
                 campoFkProfessor.setText(tabela.getValueAt(linha, 4).toString());
                 campoFkAluno.setText(tabela.getValueAt(linha, 5).toString());
+                botaoAlterar.setEnabled(true);
+                botaoExcluir.setEnabled(true);
                 
             }
         });
