@@ -68,19 +68,19 @@ public class TelaFrequencias {
         janela.add(campoIdAluno);
 
         JButton botaoSalvar = new JButton("SALVAR");
-        botaoSalvar.setBounds(180, 210, 100, 30);
+        botaoSalvar.setBounds(150, 210, 100, 30);
         janela.add(botaoSalvar);
         
         JButton botaoAlterar = new JButton("ALTERAR");
-        botaoAlterar.setBounds(140, 210, 100, 30);
+        botaoAlterar.setBounds(30, 210, 100, 30);
         janela.add(botaoAlterar);
         
         JButton botaoExcluir = new JButton("EXCLUIR");
-        botaoExcluir.setBounds(250, 210, 100, 30);
+        botaoExcluir.setBounds(290, 210, 100, 30);
         janela.add(botaoExcluir);
 
         JButton botaoGerarArquivo = new JButton("GERAR ARQUIVO");
-        botaoGerarArquivo.setBounds(300, 210, 150, 30);
+        botaoGerarArquivo.setBounds(400, 210, 150, 30);
         janela.add(botaoGerarArquivo);
 
         botaoGerarArquivo.addActionListener(e -> {
@@ -102,6 +102,64 @@ public class TelaFrequencias {
 
         PFrequencias pFrequencias = new PFrequencias();
         atualizarTabela(tabela, pFrequencias.listarFrequencias());
+        
+              final int[] idSelecionado = {-1};
+
+        tabela.getSelectionModel().addListSelectionListener(evento -> {
+            if (!evento.getValueIsAdjusting() && tabela.getSelectedRow() != -1) {
+                int linha = tabela.getSelectedRow();
+                idSelecionado[0] = Integer.parseInt(tabela.getValueAt(linha, 0).toString());
+                campoTotalAulas.setText(tabela.getValueAt(linha, 1).toString());
+                campoAulasMinistradas.setText(tabela.getValueAt(linha, 2).toString());
+                campoFaltas.setText(tabela.getValueAt(linha, 3).toString());
+                campoDisciplina.setText(tabela.getValueAt(linha, 4).toString());
+                campoIdProfessor.setText(tabela.getValueAt(linha, 5).toString());
+                campoIdAluno.setText(tabela.getValueAt(linha, 6).toString());
+            }
+        });
+
+        botaoAlterar.addActionListener(e -> {
+            if (idSelecionado[0] != -1 && validarCampos(campoTotalAulas, campoAulasMinistradas, campoFaltas, campoDisciplina, campoIdProfessor, campoIdAluno)) {
+                EFrequencias freq = new EFrequencias();
+                freq.setFrequencias_id(idSelecionado[0]);
+                freq.setTotal_aulas(Integer.parseInt(campoTotalAulas.getText()));
+                freq.setAulas_ministradas(Integer.parseInt(campoAulasMinistradas.getText()));
+                freq.setFrequencias_faltas(Integer.parseInt(campoFaltas.getText()));
+                freq.setFrequencias_disciplinas(campoDisciplina.getText());
+
+                EProfessor prof = new EProfessor();
+                prof.setIdProfessor(Integer.parseInt(campoIdProfessor.getText()));
+                freq.setProfessores(prof);
+
+                EAlunos aluno = new EAlunos();
+                aluno.setUsuario_id(Integer.parseInt(campoIdAluno.getText()));
+                freq.setAluno(aluno);
+
+                String resultado = pFrequencias.alterarFrequencia(freq);
+                JOptionPane.showMessageDialog(null, resultado);
+                atualizarTabela(tabela, pFrequencias.listarFrequencias());
+                limparCampos(campoTotalAulas, campoAulasMinistradas, campoFaltas, campoDisciplina, campoIdProfessor, campoIdAluno);
+                idSelecionado[0] = -1;
+            } else {
+                JOptionPane.showMessageDialog(null, "Selecione uma linha e preencha todos os campos.");
+            }
+        });
+
+        botaoExcluir.addActionListener(e -> {
+            if (idSelecionado[0] != -1) {
+                int confirmacao = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir a frequência selecionada?", "Confirmação", JOptionPane.YES_NO_OPTION);
+                if (confirmacao == JOptionPane.YES_OPTION) {
+                    String resultado = pFrequencias.excluirFrequencia(idSelecionado[0]);
+                    JOptionPane.showMessageDialog(null, resultado);
+                    atualizarTabela(tabela, pFrequencias.listarFrequencias());
+                    limparCampos(campoTotalAulas, campoAulasMinistradas, campoFaltas, campoDisciplina, campoIdProfessor, campoIdAluno);
+                    idSelecionado[0] = -1;
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Selecione uma linha para excluir.");
+            }
+        });
+
 
         botaoSalvar.addActionListener(e -> {
             if (validarCampos(campoTotalAulas, campoAulasMinistradas, campoFaltas, campoDisciplina, campoIdProfessor, campoIdAluno)) {

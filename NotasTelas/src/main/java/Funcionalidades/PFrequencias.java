@@ -118,7 +118,7 @@ public String gerarArquivoFrequencias(List<EFrequencias> lista) {
     }
 
     public String alterarFrequencia(EFrequencias freq) {
-        String sql = "UPDATE frequencias SET total_aulas = ?, aulas_ministradas = ?, frequencias_faltas = ?, frequencias_disciplinas = ?, fk_professores_id = ?, fk_alunos_id = ? WHERE frequencias_id = ?";
+        String sql = "UPDATE frequencias SET total_aulas = ?, aulas_ministradas = ?, frequencias_faltas = ?, frequencias_disciplinas = ?, fk_frequencias_professores_id = ?, fk_frequencias_alunos_id = ? WHERE frequencias_id = ?";
         try {
             Connection con = new Conexao().getConexao();
             PreparedStatement stmt = con.prepareStatement(sql);
